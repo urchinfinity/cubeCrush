@@ -26,7 +26,15 @@
 }
 
 .bomb {
-  background-image:url('bomb.png');
+  background-image: url('bomb.png');
+}
+
+.thunder {
+  background-image: url('bomb.png');
+}
+
+.multiColor {
+  background-image: url('bomb.png');
 }
 
 .clicked{
