@@ -26,15 +26,9 @@ class Block {
       this.block.classes.add('transparent');
       this.colorNum = TRANSPARENT;
     } else if (this.skillOn == false) {
-      this.block.classes.remove(blockColor[this.colorNum]);
-      if (this.bomb == 1) {
-        this.colorNum = BOMB;
-      } else if (this.thunder == 1) {
-        this.colorNum = THUNDER;
-      } else if (this.multiColor == 1) {
-        this.colorNum = MULTICOLOR;
-      }
-      this.block.classes.add(blockColor[this.colorNum]);
+      this.block.classes.add(bombOn[this.bomb]);
+      this.block.classes.add(thunderOn[this.thunder]);
+      this.block.classes.add(multiColorOn[this.multiColor]);
     } else if (this.skillOn == true) {
       this.skillOn = false;
       if (this.bomb == 1) {
@@ -47,6 +41,9 @@ class Block {
         this.multiColor = 0;
         this.oneColorCrushing();
       }
+      this.block.classes.remove(bombOn[1]);
+      this.block.classes.remove(thunderOn[1]);
+      this.block.classes.remove(multiColorOn[1]);
     }
   }
   
@@ -112,13 +109,18 @@ class Block {
   
   void shiftColor(Block nextBlock) {
     this.block.classes.remove(blockColor[this.colorNum]);
-    this.block.classes.add(blockColor[nextBlock.colorNum]);
+    this.block.classes.remove(bombOn[this.bomb]);
+    this.block.classes.remove(thunderOn[this.thunder]);
+    this.block.classes.remove(multiColorOn[this.multiColor]);
     this.colorNum = nextBlock.colorNum;
     this.bomb = nextBlock.bomb;
     this.thunder = nextBlock.thunder;
     this.multiColor = nextBlock.multiColor;
     this.skillOn = nextBlock.skillOn;
-    this.addSkill();  //-----------------------------------------------------------------------------------------------
+    this.block.classes.add(blockColor[this.colorNum]);
+    this.block.classes.add(bombOn[this.bomb]);
+    this.block.classes.add(thunderOn[this.thunder]);
+    this.block.classes.add(multiColorOn[this.multiColor]);
   }
   
   //animate of clicked block
@@ -139,34 +141,32 @@ class Block {
     int tempMulti = this.multiColor;
     bool tempSkillOn = this.skillOn;
     this.block.classes.remove(blockColor[this.colorNum]);
-    this.block.classes.add(blockColor[another.colorNum]);
+    this.block.classes.remove(bombOn[this.bomb]);
+    this.block.classes.remove(thunderOn[this.thunder]);
+    this.block.classes.remove(multiColorOn[this.multiColor]);
     this.colorNum = another.colorNum;
     this.bomb = another.bomb;
     this.thunder = another.thunder;
     this.multiColor = another.multiColor;
     this.skillOn = another.skillOn;
+    this.block.classes.add(blockColor[this.colorNum]);
+    this.block.classes.add(bombOn[this.bomb]);
+    this.block.classes.add(thunderOn[this.thunder]);
+    this.block.classes.add(multiColorOn[this.multiColor]);
     another.block.classes.remove(blockColor[another.colorNum]);
-    another.block.classes.add(blockColor[tempColor]);
+    another.block.classes.remove(bombOn[another.bomb]);
+    another.block.classes.remove(thunderOn[another.thunder]);
+    another.block.classes.remove(multiColorOn[another.multiColor]);
     another.colorNum = tempColor;
     another.bomb = tempBomb;
     another.thunder = tempThunder;
     another.multiColor = tempMulti;
     another.skillOn = tempSkillOn;
-    this.addSkill();  //-----------------------------------------------------------------------------------------
-    another.addSkill();  //--------------------------------------------------------------------------------------------
-  }  
-  
-  /*-------------------------------------------------------------------------------------------------------------*/
-  void addSkill() {
-    if (this.skillOn == true) {
-      this.block.classes.add(blockColor[this.colorNum]);
-    } else if (this.skillOn == false && this.colorNum >= BOMB) {
-      this.block.classes.remove(blockColor[this.colorNum]);
-    }
+    another.block.classes.add(blockColor[another.colorNum]);
+    another.block.classes.add(bombOn[another.bomb]);
+    another.block.classes.add(thunderOn[another.thunder]);
+    another.block.classes.add(multiColorOn[another.multiColor]);
   }
-  /*-------------------------------------------------------------------------------------------------------------*/
-  
-  
 }
 
 class CountBlock {
@@ -198,7 +198,10 @@ int score = 0;
 DivElement parent;
 int max;
 Random random = new Random();
-List<String> blockColor = ['red', 'yellow', 'blue', 'green', 'purple', 'transparent', 'bomb', 'thunder', 'multiColor'];
+List<String> blockColor = ['red', 'yellow', 'blue', 'green', 'purple', 'transparent'];
+List<String> bombOn = ['', 'bomb'];
+List<String> thunderOn = ['', 'thunder'];
+List<String> multiColorOn = ['', 'multiColor'];
 List<List<Block>> blocks;
 List<Flag> flags = new List(4); 
 bool sthClicked = false;
@@ -234,10 +237,6 @@ void createBlocks() {
       blocks[i][j].block.style.left = '${blocks[i][j].left}px';
       blocks[i][j].block.style.top = '${blocks[i][j].top}px';
       parent.nodes.add(blocks[i][j].block);
-      blocks[i][j].shiftBlock = new Element.html('<div class="block ${blockColor[5]}"></div>');
-      blocks[i][j].shiftBlock.style.left = '${blocks[i][j].left}px';
-      blocks[i][j].shiftBlock.style.top = '${blocks[i][j].top}px';
-      parent.nodes.add(blocks[i][j].shiftBlock);
     }
   }
 }
@@ -282,37 +281,17 @@ void findBlocksX (int count, Block clickedBlock) {
   } else if (pos + 2 >= column) {
     max -= pos + 3 - column;
   }
-  flags[count].times = 1;
-  for (int i = 1; i < max; i++) {
-    if (blocks[pos+i-2][y].colorNum >= BOMB || blocks[pos+i-2][y].colorNum == blocks[pos+i-3][y].colorNum) {
+  for (int i = 0; i < max; i++) {
+    if (clickedBlock.colorNum == blocks[pos+i-2][y].colorNum) {
       flags[count].times++;
       flags[count].x = pos + i - 2;
-    } else if (blocks[pos+i-3][y].colorNum >= BOMB) {
-      int centerColor = BOMB;
-      int k;
-      for (k = 0; k < flags[count].times; k++) {
-        if (blocks[pos+i-3-k][y].colorNum < BOMB) {
-          centerColor = blocks[pos+i-3-k][y].colorNum;
-          break;
-        }
-      }
-      if (centerColor == BOMB || centerColor == blocks[pos+i-2][y].colorNum) {
-        flags[count].times++;
-        flags[count].x = pos + i - 2;
-      } else if (flags[count].times < 3) {
-        flags[count].times = k + 1;
-        flags[count].x = pos + i - 2;
-      } else {
-        break;
-      }
     } else {
       if (flags[count].times >= 3) {
         break;
       } else {
-        flags[count].times = 1;
-        flags[count].x = pos + i - 2;
+        flags[count].times = 0;
       }
-    } 
+    }
   }
 }
 
@@ -327,36 +306,17 @@ void findBlocksY (int count, Block clickedBlock) {
   } else if (pos + 2 >= row) {
     max -= pos + 3 - row;
   }
-  for (int i = 1; i < max; i++) {
-    if (blocks[x][pos+i-2].colorNum >= BOMB || blocks[x][pos+i-2].colorNum == blocks[x][pos+i-3].colorNum) {
+  for (int i = 0; i < max; i++) {
+    if (clickedBlock.colorNum == blocks[x][pos+i-2].colorNum) {
       flags[count].times++;
       flags[count].y = pos + i - 2;
-    } else if (blocks[x][pos+i-3].colorNum >= BOMB) {
-      int centerColor = BOMB;
-      int k;
-      for (k = 0; k < flags[count].times; k++) {
-        if (blocks[x][pos+i-3-k].colorNum < BOMB) {
-          centerColor = blocks[x][pos+i-3-k].colorNum;
-          break;
-        }
-      }
-      if (centerColor == BOMB || centerColor == blocks[x][pos+i-2].colorNum) {
-        flags[count].times++;
-        flags[count].y = pos + i - 2;
-      } else if (flags[count].times < 3) {
-        flags[count].times = k + 1;
-        flags[count].y = pos + i - 2;
-      } else {
-        break;
-      }
     } else {
       if (flags[count].times >= 3) {
         break;
       } else {
-        flags[count].times = 1;
-        flags[count].y = pos + i - 2;
+        flags[count].times = 0;
       }
-    } 
+    }
   }
 }
 
@@ -408,43 +368,15 @@ List<List<CountBlock>> findBlocks() {
         countBlocks[i][j].countRow = 1;
       }
       if (i != 0) {
-        if (blocks[i][j].colorNum == blocks[i-1][j].colorNum || blocks[i][j].colorNum >= BOMB) {
+        if (blocks[i-1][j].colorNum == blocks[i][j].colorNum) {
           countBlocks[i][j].countColumn = countBlocks[i-1][j].countColumn + 1;
-        } else if (blocks[i-1][j].colorNum >= BOMB) {
-          int centerColor = BOMB;
-          int k;
-          for (k = 0; k < countBlocks[i-1][j].countColumn; k++) {
-            if (blocks[i-1-k][j].colorNum < BOMB) {
-              centerColor = blocks[i-1-k][j].colorNum;
-              break;
-            }
-          }
-          if (centerColor == BOMB || centerColor == blocks[i][j].colorNum) {
-            countBlocks[i][j].countColumn = countBlocks[i-1][j].countColumn + 1;
-          } else {
-            countBlocks[i][j].countColumn = k + 1;
-          }
         } else {
           countBlocks[i][j].countColumn = 1;
         }
       }
       if (j != 0) {
-        if (blocks[i][j].colorNum == blocks[i][j-1].colorNum) {
+        if (blocks[i][j-1].colorNum == blocks[i][j].colorNum) {
           countBlocks[i][j].countRow = countBlocks[i][j-1].countRow + 1;
-        } else if (blocks[i][j-1].colorNum >= BOMB) {
-          int centerColor = BOMB;
-          int k;
-          for (k = 0; k < countBlocks[i][j-1].countRow; k++) {
-            if (blocks[i][j-1-k].colorNum < BOMB) {
-              centerColor = blocks[i-1-k][j].colorNum;
-              break;
-            }
-          }
-          if (centerColor == BOMB || centerColor == blocks[i][j].colorNum) {
-            countBlocks[i][j].countRow = countBlocks[i-1][j].countRow + 1;
-          } else {
-            countBlocks[i][j].countRow = k + 1;
-          }
         } else {
           countBlocks[i][j].countRow = 1;
         }
@@ -500,7 +432,7 @@ print(score);
     cleanTimes = 1;
     return false;
   }
-  new Timer(new Duration(milliseconds: 450),(){
+  new Timer(new Duration(milliseconds: 200),(){
     fallingDown();
   });
   return true;
@@ -508,17 +440,14 @@ print(score);
 
 Timer clean;
 void disappearAndFall() {
+  while(!(searchLine() || searchBox())) {
+    restart();
+  }
   findBlocksX(0, firstClicked);
   findBlocksY(1, firstClicked);
   findBlocksX(2, secondClicked);
   findBlocksY(3, secondClicked);
-  
-  print('${flags[0].times} ${flags[0].x} ${flags[0].y}');
-  print('${flags[1].times} ${flags[1].x} ${flags[1].y}');
-  print('${flags[2].times} ${flags[2].x} ${flags[2].y}');
-  print('${flags[3].times} ${flags[3].x} ${flags[3].y}');
-  
-  //find special blocks
+  ///find special blocks
   List<List<CountBlock>> countBlocks = findBlocks();
   findBomb(countBlocks);
   findCross(countBlocks);
@@ -575,14 +504,13 @@ print(score);
       }
     }
   }
-  /*
   if(crush == false) {
     new Timer(new Duration(milliseconds: 200),(){
       firstClicked.exchange(secondClicked);
     });
     return;
   }
-  new Timer(new Duration(milliseconds: 350),(){
+  new Timer(new Duration(milliseconds: 300),(){
     fallingDown();
     clean = new Timer.periodic(new Duration(milliseconds: 350), (_){
      if (!cleanBlocks()) {
@@ -590,7 +518,6 @@ print(score);
      }
     });
   });
-  */
 }
 
 void hint() {
@@ -608,14 +535,14 @@ void restart() {
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
       blocks[i][j].block.classes.remove(blockColor[blocks[i][j].colorNum]);
+      blocks[i][j].block.classes.remove(bombOn[blocks[i][j].bomb]);
+      blocks[i][j].block.classes.remove(thunderOn[blocks[i][j].thunder]);
+      blocks[i][j].block.classes.remove(multiColorOn[blocks[i][j].multiColor]);
       blocks[i][j].colorNum = random.nextInt(5);
       blocks[i][j].bomb = 0;
       blocks[i][j].thunder = 0;
       blocks[i][j].multiColor = 0;
-      if (blocks[i][j].skillOn == true) {
-        blocks[i][j].block.classes.remove('bomb');
-        blocks[i][j].skillOn = false;
-      }
+      blocks[i][j].skillOn = false;
     }
   }
   int blockNum = 0;
@@ -633,8 +560,10 @@ class HintBlock {
   int blockNums;
   int sumI;
   int sumJ;
+  
   HintBlock (this.blockNums, this.sumI, this.sumJ) {
   }
+  
   void counting (int x, int y) {
     this.blockNums++;
     this.sumI += x;
@@ -917,11 +846,6 @@ void startEvent(){
       searchTimer.cancel();
     }
   });
-  
-  
-  /*
-  
-  
   ///shake after 45s
   Timer s = new Timer(new Duration(seconds: 45), (){
     after45 = true;
@@ -946,15 +870,6 @@ void startEvent(){
     endHtml();
     return;
   });
-  
-  
-  
-  
-  
-  */
-  
-  
-  
   parent.onClick.listen((MouseEvent event) {
     List<int> clickPos = new List(4);
     clickPos[0] = (event.page.x - parent.offsetLeft).toInt();
