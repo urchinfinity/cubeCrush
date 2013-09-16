@@ -1,0 +1,50 @@
+.red {
+  background-color: #ff0563;
+}
+
+.yellow {
+  background-color: #f9ff45;
+}
+
+.blue {
+  background-color: #0596de;
+}
+
+.green {
+  background-color: #1cf540;
+}
+
+.purple {
+  background-color: #9e056b;
+}
+
+.transparent {
+}
+
+.disappear {
+  display: none;
+}
+
+.bomb {
+  background-image:url('bomb.png');
+}
+
+.clicked{
+  -webkit-box-shadow: 0px 0px 22px rgba(255, 255, 255, 0.72);
+  -moz-box-shadow:    0px 0px 22px rgba(255, 255, 255, 0.72);
+  box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);
+  animation: onClick 1s ease;
+  -webkit-animation: onClick 1s ease;
+}
+
+@keyframes onClick
+{
+from {box-shadow:         0px 0px 0px rgba(255, 255, 255, 0.72);}
+to   {box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);}
+}
+
+@-webkit-keyframes onClick
+{
+from {box-shadow:         0px 0px 0px rgba(255, 255, 255, 0.72);}
+to   {box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);}
+}

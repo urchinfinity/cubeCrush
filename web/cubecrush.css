@@ -1,0 +1,198 @@
+#frame, .block, .score, header, .rank, .hint, .time, .timeline, .restart, .number, .shield, .start, .endScoreOut .startIn, .endScoreIn {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;  
+  position: absolute;
+  margin: 0;
+}
+
+body {
+  width: 100%;
+  background-color: #FFB538;
+}
+
+header{
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  padding-left: 50px;
+  padding-top: 25px;
+  background: black;
+  color: #FFB538;
+  font-size: 90px;
+  font-family: "Chiller", "Comic Sans MS", sans-serif;
+}
+
+#frame, .shield {
+  top: 200px;
+  left: 80px;
+  width: 824px;
+  height: 484px;
+  border-radius: 10px;
+  border: 0px;
+  background-color: #360505;
+}
+
+.block {
+  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  margin: 0px;
+  border: 0px;
+}
+
+.score{
+  top: 700px;
+  left: 80px;
+  width: 690px;
+  height: 50px;
+  padding-left: 20px;
+  padding-top: 5px;
+  border-radius: 25px;
+  background-color: #360505;
+  font-size: 30px;
+  color: white;
+}
+
+.hint, .restart {
+  top: 700px;
+  left: 790px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #360505;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+.restart {
+  font-size: 19px;
+  left: 860px;
+}
+
+.timeline {
+  top: 800px;
+  left: 80px;
+  width: 824px;
+  height: 30px;
+  background-color: #360505;
+}
+
+.time {
+  top: 5px;
+  left: 5px;
+  width: 814px;
+  height: 20px;
+  background-color: #fff;
+}
+
+.timeStart{
+  animation: shorter 60s linear;
+  -webkit-animation: shorter 60s linear;
+  width: 0px;
+}
+
+@keyframes shorter
+{
+from {width: 814px;}
+to   {width: 0px;}
+}
+
+@-webkit-keyframes shorter
+{
+from {width: 814px;}
+to   {width: 0px;}
+}
+
+.shield{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.rank{
+  left: 950px;
+  top:200px;
+  width: 300px;
+  height: 484px;
+  border-radius: 10px;
+  background-color: #360505;
+  color: #fff;
+  font-size: 30px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.number, .start, .endScoreOut, .endScoreIn {
+  top: 400px;
+  left: 330px;
+  height: 84px;
+  width: 300px;
+  text-align: center;
+  color: white;
+  font-size: 50px;
+}
+
+ .start, .endScoreOut, .endScoreIn {
+  border-radius: 10px;
+  background-color: orange;
+  color: white;
+  font-size: 50px;
+  padding-top: 10px;
+ }
+
+.endScoreIn {
+  padding-left: 20px;
+  text-align: left;
+}
+
+.shake {
+  animation: shakes 0.2s ease infinite;
+  -webkit-animation: shakes 0.2s ease infinite;
+}
+
+.shakeB {
+  animation: shakesB 0.1s infinite;
+  -webkit-animation: shakesB 0.1s infinite;
+}
+
+@keyframes shakes
+{
+0%    {transform: rotate(3deg);}
+20%   {transform: rotate(0deg);}
+50%   {transform: rotate(-3deg);}
+80%   {transform: rotate(0deg);}
+100%% {transform: rotate(3deg);}
+}
+
+@-webkit-keyframes shakes
+{
+0%    {-webkit-transform: rotate(3deg);}
+20%   {-webkit-transform: rotate(0deg);}
+50%   {-webkit-transform: rotate(-3deg);}
+80%   {-webkit-transform: rotate(0deg);}
+100%% {-webkit-transform: rotate(3deg);}
+}
+
+@keyframes shakesB
+{
+0%    {transform: rotate(5deg);}
+20%   {transform: rotate(0deg);}
+50%   {transform: rotate(-5deg);}
+80%   {transform: rotate(0deg);}
+100%% {transform: rotate(5deg);}
+}
+
+@-webkit-keyframes shakesB
+{
+0%    {-webkit-transform: rotate(5deg);}
+20%   {-webkit-transform: rotate(0deg);}
+50%   {-webkit-transform: rotate(-5deg);}
+80%   {-webkit-transform: rotate(0deg);}
+100%% {-webkit-transform: rotate(5deg);}
+}
