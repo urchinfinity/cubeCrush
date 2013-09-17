@@ -320,39 +320,27 @@ void findBlocksY (int count, Block clickedBlock) {
   }
 }
 
-void fallingDown() {
-  int transBottom, transNum;
-  int i, j, k;
-  for (i = 0; i < column; i++) {
-    for ( j = row - 1; j >= 0; j--) {
+bool fallingDown() {
+  for (int i = 0; i < column; i++) {
+    for (int j = row - 1; j >= 0; j--) {
       if (blocks[i][j].colorNum == TRANSPARENT) {
-        transBottom = j;
-        transNum = findTopOfTrans(i, j);
-        // start to fall
-        if (transBottom != null) {
-          for (k = transBottom; k >= 0; k--) {
-            if (k - transNum < 0) {
-              Block tempBlock = new Block(random.nextInt(5), 0, 0);
-              blocks[i][k].shiftColor(tempBlock);
-            } else {
-              blocks[i][k].shiftColor(blocks[i][k - transNum]);
-            }
-          }
+        for (int k = j; k > 0; k--) {
+          blocks[i][k].shiftColor(blocks[i][k - 1]);
         }
+        Block tempBlock = new Block(random.nextInt(5), 0, 0);
+        blocks[i][0].shiftColor(tempBlock);
+        break;
       }
     }
   }
-}
-
-int findTopOfTrans(int transPosColumn, int transPosRow) {
-  int count = 0;
-  for (int i = transPosRow; i >= 0; i--) {
-    if (blocks[transPosColumn][i].colorNum != TRANSPARENT) {
-      break;
+  for (int i = 0; i < column; i++) {
+    for (int j = 0; j < row; j++) {
+      if (blocks[i][j].colorNum == TRANSPARENT) {
+        return false;
+      }
     }
-    count++;
   }
-  return count;
+  return true;
 }
 
 List<List<CountBlock>> findBlocks() {
@@ -432,13 +420,19 @@ print(score);
     cleanTimes = 1;
     return false;
   }
-  new Timer(new Duration(milliseconds: 200),(){
-    fallingDown();
+  startToClean = false;
+  cleanFall = new Timer.periodic(new Duration(milliseconds: 200), (_){
+    if (fallingDown()) {
+      cleanFall.cancel();
+      startToClean = true;
+    }
   });
   return true;
 }
 
 Timer clean;
+Timer cleanFall;
+bool startToClean;
 void disappearAndFall() {
   while(!(searchLine() || searchBox())) {
     restart();
@@ -512,13 +506,22 @@ print(score);
     return;
   }
   */
-  new Timer(new Duration(milliseconds: 300),(){
-    fallingDown();
-    clean = new Timer.periodic(new Duration(milliseconds: 350), (_){
-     if (!cleanBlocks()) {
-       clean.cancel();
-     }
-    });
+  startToClean = false;
+  cleanFall = new Timer.periodic(new Duration(milliseconds: 200), (_){
+    if (fallingDown()) {
+      cleanFall.cancel();
+      startToClean = true;
+    }
+  });
+  clean = new Timer.periodic(new Duration(milliseconds: 1), (_){
+    if (startToClean) {
+      startToClean = false;
+      Timer delayTime = new Timer(new Duration(milliseconds: 200), (){
+        if (!cleanBlocks()) {
+          clean.cancel();
+        }
+      });
+    }
   });
 }
 
