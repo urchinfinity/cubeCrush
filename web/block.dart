@@ -504,12 +504,14 @@ print(score);
       }
     }
   }
+  /*
   if(crush == false) {
     new Timer(new Duration(milliseconds: 200),(){
       firstClicked.exchange(secondClicked);
     });
     return;
   }
+  */
   new Timer(new Duration(milliseconds: 300),(){
     fallingDown();
     clean = new Timer.periodic(new Duration(milliseconds: 350), (_){
