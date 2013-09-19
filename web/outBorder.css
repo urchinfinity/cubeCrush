@@ -1,0 +1,106 @@
+.outBorder {
+  top: 200px;
+  width: 952px;
+  height: 544px;
+}
+
+#frame, .shield {
+  top: 0;
+  left: 0;
+  width: 892px;
+  height: 484px;
+  border-radius: 10px;  
+  background-color: #360505;
+}
+
+.shield {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.button {
+  top: 10px;
+  left: 902px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #360505;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+
+#restart {
+  top: 70px;
+  font-size: 19px;
+}
+
+#mute {
+  top: 130px;
+}
+
+.score{
+  top: 494px;
+  left: 692px;
+  width: 200px;
+  height: 40px;
+  padding-left: 20px;
+  padding-top: 5px;
+  border-radius: 10px;
+  background-color: #360505;
+  font-size: 30px;
+  color: white;
+}
+
+.timeline {
+  top: 494px;
+  left: 0px;
+  width: 682px;
+  height: 40px;
+  background-color: #360505;
+}
+
+.time {
+  top: 5px;
+  left: 10px;
+  width: 662px;
+  height: 30px;
+  background-color: #fff;
+}
+
+.timeStart{
+  animation: shorter 60s linear;
+  -webkit-animation: shorter 60s linear;
+  width: 0px;
+}
+
+@keyframes shorter
+{
+from {width: 662px;}
+to   {width: 0px;}
+}
+
+@-webkit-keyframes shorter
+{
+from {width: 662px;}
+to   {width: 0px;}
+}
+
+
+.number, .start {
+  top: 200px;
+  left: 296px;
+  width: 300px;
+  height: 84px;
+  text-align: center;
+  color: white;
+  font-size: 50px;
+}
+
+.start {  
+  border-radius: 10px;
+  background-color: orange;
+  color: white;
+  font-size: 50px;
+  padding-top: 10px;
+}

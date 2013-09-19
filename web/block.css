@@ -1,3 +1,11 @@
+.block {
+  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  margin: 0px;
+  border: 0px;
+}
+
 .red {
   background-color: #ff0563;
 }
