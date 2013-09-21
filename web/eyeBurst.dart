@@ -24,10 +24,11 @@ void swap(Eye a, Eye b) {
 
 const int column = 13;
 const int row  = 7;
-const int size = 60;
-const int border = 8;
+const int size = 66;
+const int border = 2;
+const int outborder = 8;
 
-List<String> blockColor = ['red', 'yellow', 'blue', 'green', 'purple', 'transparent'];
+List<String> blockColor = ['red', 'yellow', 'blue', 'green', 'purple'];
 Animator animator = new Animator();
 Random random = new Random();
 

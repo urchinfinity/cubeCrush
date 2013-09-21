@@ -1,33 +1,16 @@
 .block {
   border-radius: 8px;
-  width: 60px;
-  height: 60px;
+  width: 66px;
+  height: 66px;
   margin: 0px;
   border: 0px;
 }
 
-.red {
-  background-color: #ff0563;
+.block img {
+  width: 66px;
 }
 
-.yellow {
-  background-color: #f9ff45;
-}
 
-.blue {
-  background-color: #0596de;
-}
-
-.green {
-  background-color: #1cf540;
-}
-
-.purple {
-  background-color: #9e056b;
-}
-
-.transparent {
-}
 
 .disappear {
   display: none;

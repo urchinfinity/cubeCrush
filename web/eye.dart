@@ -26,6 +26,13 @@ class Eye {
     _block.remove();
     _block == null;
   }
+
+  void addColor(int color) {
+    ImageElement img = new Element.html('<img src="static/${blockColor[color - 11]}02.png">');
+    img.style.width = px(60);
+    _block.nodes.add(img);
+
+  }
 }
 
 List<List<Eye>> blocks;
@@ -35,23 +42,24 @@ void createBlocks() {
   for (int i = 0; i < column; i++) {
     blocks[i] = new List(row);
     for (int j = 0; j < row; j++) {
-      int left = i == 0? border: (i * (size + border) + border);
-      int top = j == 0? border: (j * (size + border) + border);
-      int color = random.nextInt(5);
+      int left = i * (size + border) + outborder;
+      int top = j * (size + border) + outborder;
+      int color = random.nextInt(5) + 11;
       blocks[i][j] = new Eye(color, left, top);
       blocks[i][j].posX = i;
       blocks[i][j].posY = j;
     }
   }
   int blockNum = 0;
-  while(blockNum != column * row) {
+ // while(blockNum != column * row) {
    // blockNum = checkBlocks();
-  }
+  //}
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
-      blocks[i][j]._block = new Element.html('<div class="block ${blockColor[blocks[i][j].colorNum - 10]}"></div>');
+      blocks[i][j]._block = new Element.html('<div class="block"></div>');
       blocks[i][j]._block.style.left = '${blocks[i][j].left}px';
       blocks[i][j]._block.style.top = '${blocks[i][j].top}px';
+      blocks[i][j].addColor(blocks[i][j].colorNum);
       parent.nodes.add(blocks[i][j]._block);
     }
   }

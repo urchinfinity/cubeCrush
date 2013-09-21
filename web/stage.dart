@@ -12,14 +12,14 @@ Stage stage = new Stage();
 StageManager stageManager = new StageManager();
 
 class StageManager {
-  setStage(){    
+  void setStage() {    
     query('.copyright').style.top = "${window.innerHeight - 120}px";
     query('#outBorder').style.left = "${(window.innerWidth - 952) / 2}px";
     query('.output').style.height = "${window.innerHeight - 240}px";
     parent = query("#frame");
     createBlocks();
   }
-  setEvent(){    
+  void setEvent() {    
     query('#start').onClick.listen((MouseEvent event) {
       query('#start').classes.add('disappear');
       query('#bigShield').classes.add('disappear');

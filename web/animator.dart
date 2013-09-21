@@ -1,6 +1,6 @@
 library animator;
 
-import "dart:html" show window;
+import "dart:html";
 
 class Animator {
   bool _running = false;

@@ -166,6 +166,11 @@ class Block {
     another.block.classes.add(thunderOn[another.thunder]);
     another.block.classes.add(multiColorOn[another.multiColor]);
   }
+  void addColor(int color) {
+    ImageElement img = new Element.html('<img src="static/${blockColor[color]}.png">');
+    img.style.width = px(60);
+    _block.nodes.add(img);
+
 }
 
 class CountBlock {
@@ -232,10 +237,11 @@ void createBlocks() {
   }
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
-      blocks[i][j].block = new Element.html('<div class="block ${blockColor[blocks[i][j].colorNum]}"></div>');
-      blocks[i][j].block.style.left = '${blocks[i][j].left}px';
-      blocks[i][j].block.style.top = '${blocks[i][j].top}px';
-      parent.nodes.add(blocks[i][j].block);
+      blocks[i][j]._block = new Element.html('<div class="block"></div>');
+      blocks[i][j]._block.style.left = '${blocks[i][j].left}px';
+      blocks[i][j]._block.style.top = '${blocks[i][j].top}px';
+      blocks[i][j].addColor(blocks[i][j].colorNum);
+      parent.nodes.add(blocks[i][j]._block);
     }
   }
 }
