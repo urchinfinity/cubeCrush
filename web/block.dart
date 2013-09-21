@@ -15,8 +15,7 @@ class Block {
   int multiColor = 0;
   bool skillOn = false;
   bool count = false;
-  List<int> pos = new List(2);
-  
+  List<int> pos = new List(2);  
   Block (this.colorNum, this.left, this.top) {
   }
   
@@ -843,14 +842,14 @@ bool after45 = false;
 bool after55 = false;
 
 void startEvent(){
-  searchTimer = new Timer.periodic(new Duration(milliseconds: 1), (_){      
-    if(!(searchLine() || searchBox())) {
-      restart();
-    }
-    else {
-      searchTimer.cancel();
-    }
-  });
+  //searchTimer = new Timer.periodic(new Duration(milliseconds: 1), (_){      
+  //  if(!(searchLine() || searchBox())) {
+  //    restart();
+  //  }
+  //  else {
+  //    searchTimer.cancel();
+  //  }
+  //});
   ///shake after 45s
   Timer s = new Timer(new Duration(seconds: 45), (){
     after45 = true;
