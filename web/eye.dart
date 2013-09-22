@@ -12,6 +12,8 @@ class Eye {
   static const int YELLOW = 15;
   
   DivElement _block;
+  ImageElement _img;
+  ImageElement _clickedImg;
   int _status = NORMAL; 
   int colorNum;
   bool count = false;
@@ -33,24 +35,51 @@ class Eye {
   }
   
   void beClicked() {
-    this._block.classes.add('clicked');
+    _img.classes.add('disappear');
+    _clickedImg.classes.remove('disappear');
+    _block.classes.add('clicked');
   }
   
   void cancelClicked() {
-    this._block.classes.remove('clicked');
+    _img.classes.remove('disappear');
+    _clickedImg.classes.add('disappear');
+    _block.classes.remove('clicked');
+  }
+
+  void swap(Eye another) {
+    var temp;
+    temp = this._block;
+    this._block = another._block;
+    another._block = temp;
+    temp = this.colorNum;
+    this.colorNum = another.colorNum;
+    another.colorNum = temp;
+    temp = this.status;
+    this.status = another.status;
+    another.status = temp;
+    temp = this._img;
+    this._img = another._img;
+    another._img = temp;
+    temp = this._clickedImg;
+    this._clickedImg = another._clickedImg;
+    another._clickedImg = temp;
   }
 
   void destory() {
+    print('${_block.runtimeType},$posX,$posY');
     _block.remove();
+    _block = null;
     colorNum = null;
     count = false;
     status = NORMAL;
   }
 
   void addColor(int color) {
-    ImageElement img = new Element.html('<img src="static/${blockColor[color - 11]}02.png">');
-    _block.nodes.add(img);
-
+    _img = new Element.html('<img src="static/${blockColor[color - 11]}02.png">');
+    _clickedImg = new Element.html('<img src="static/${blockColor[colorNum - 11]}Clicked.png">');
+    _clickedImg.classes.add('disappear');
+    _block.nodes.add(_img);
+    _block.nodes.add(_clickedImg);
   }
   bool besideClicked(Eye another) {
     if (this.posX == another.posX && another.posY == this.posY + 1)

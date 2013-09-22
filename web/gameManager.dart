@@ -15,14 +15,16 @@ class GameManager implements Actor {
 print('first: $crush');
     cleanTimes++;
     List<List<CountBlock>> countBlocks = findBlocks();
+    //put bomb
     findBomb(countBlocks);
+    //put thunder and colocClean
     findCross(countBlocks);
     for (int i = column - 1; i >= 0 ; i--) {
       for (int j = row - 1; j >= 0; j--) {
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
-            if (blocks[i-k][j].status == Eye.NORMAL)
-              animator.add(new Remover(blocks[i-k][j]));
+print("add remover ${i-k},$j");
+            animator.add(new Remover(blocks[i-k][j]));
             crush = true;
             /// count score
             if (blocks[i-k][j].count == false) {
@@ -33,8 +35,8 @@ print('first: $crush');
         }
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
-            if (blocks[i-k][j].status == Eye.NORMAL)
-              animator.add(new Remover(blocks[i][j-k]));
+print("add remover ${i},${j-k}");
+            animator.add(new Remover(blocks[i][j-k]));
             crush = true;
             //count score
             if (blocks[i][j-k].count == false) {
@@ -148,7 +150,8 @@ class Changer implements Actor {
       }
       a.cancelClicked();
       b.cancelClicked();
-      swap(a, b);
+print("swap $a, $b");
+      a.swap(b);
       report();
       return;
     }
@@ -164,21 +167,17 @@ class Changer implements Actor {
 }
 
 class Remover implements Actor {
-  int special;
   int callTimes = 0;
   Eye removed;
   
-  Remover(this.removed, {int put}) {
-    if (put != null)
-      special = put;
+  Remover(this.removed) {
   }
   
   void next(num time){
     if(callTimes >= 8){
-      if(special == null)
+print("rm ${removed.status},${removed.runtimeType}");
+      if(removed.status == Eye.NORMAL)
         removed.destory();
-      else
-        removed.status = special;
       animator.remove(this);
       gameManager.executing = true;
     }

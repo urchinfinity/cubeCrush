@@ -16,21 +16,8 @@ DivElement hintButton;
 String px(num number) {
   return "${number}px";
 }
-int pxToString(String px) {
+int pxToInt(String px) {
   return int.parse(px.substring(0, px.length - 2));
-}
-
-void swap(Eye a, Eye b) {
-  var temp;
-  temp = a._block;
-  a._block = b._block;
-  b._block = temp;
-  temp = a.colorNum;
-  a.colorNum = b.colorNum;
-  b.colorNum = temp;
-  temp = a.status;
-  a.status = b.status;
-  b.status = temp;
 }
 
 const int column = 13;

@@ -23,9 +23,9 @@ class StageManager {
   }
   
   void setStage() {    
-    query('.copyright').style.top = "${window.innerHeight - 110}px";
-    query('#outBorder').style.left = "${(window.innerWidth - 952) / 2}px";
-    query('.output').style.height = "${window.innerHeight - 240}px";
+    query('.copyright').style.top = window.innerHeight - 110 >= 861? px(window.innerHeight - 110): px(861);
+    query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
+    query('.output').style.height = px(window.innerHeight - 240);
     setTimer();
     parent = query("#frame");
     createBlocks();
@@ -41,28 +41,32 @@ class StageManager {
           return;
       clickPosX = (clickPosX / (size + border)).toInt();
       clickPosY = (clickPosY / (size + border)).toInt();
-        if (!sthClicked) {
-          sthClicked = true;
+      if(blocks[clickPosX][clickPosY]._block == null){
+        return;
+      }
+      if (!sthClicked) {
+        sthClicked = true;
+        firstClicked = blocks[clickPosX][clickPosY];
+        firstClicked.beClicked();
+      } else {
+        if (blocks[clickPosX][clickPosY] == firstClicked) {    // click the same block
+          sthClicked = false;
+          firstClicked.cancelClicked();
+          firstClicked = null;
+        } else if (firstClicked.besideClicked(blocks[clickPosX][clickPosY])) {
+          sthClicked = false;
+          secondClicked = blocks[clickPosX][clickPosY];
+          secondClicked.beClicked();
+          Changer changer = new Changer(300);
+          changer._pickEyes(firstClicked, secondClicked);
+          sthClicked = false;
+          animator.add(changer);
+        } else {
+          firstClicked.cancelClicked();
           firstClicked = blocks[clickPosX][clickPosY];
           firstClicked.beClicked();
-        } else {
-          if (blocks[clickPosX][clickPosY] == firstClicked) {    // click the same block
-            sthClicked = false;
-            firstClicked.cancelClicked();
-            firstClicked = null;
-          } else if (firstClicked.besideClicked(blocks[clickPosX][clickPosY])) {
-            sthClicked = false;
-            secondClicked = blocks[clickPosX][clickPosY];
-            secondClicked.beClicked();
-            Changer changer = new Changer(300);
-            changer._pickEyes(firstClicked, secondClicked);
-            animator.add(changer);
-          } else {
-            firstClicked.cancelClicked();
-            firstClicked = blocks[clickPosX][clickPosY];
-            firstClicked.beClicked();
-          } 
         } 
+      } 
     });
 
     query('#start').onClick.listen((MouseEvent event) {

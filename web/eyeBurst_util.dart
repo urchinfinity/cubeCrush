@@ -134,7 +134,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
         for (int x = i - countBlocks[i][j].countColumn + 1; x <= i; x++) {
           for (int y = j; y < max; y++) {
             if (countBlocks[x][y].countRow >= 3) {
-              animator.add(new Remover(blocks[x][j], put: Eye.BOMB));
+              blocks[x][j].status = Eye.BOMB;
             }
           }
         }
@@ -151,7 +151,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
         for (int x = i; x < max; x++) {
           for (int y = j - countBlocks[i][j].countRow + 1; y <= j; y++) {
             if (countBlocks[x][y].countColumn >= 3) {
-              animator.add(new Remover(blocks[i][y], put: Eye.BOMB));
+              blocks[i][y].status = Eye.BOMB;
             }
           }
         }
@@ -165,16 +165,16 @@ void findCross(List<List<CountBlock>> countBlocks) {
     for (int j = 0; j <row; j++) {
       if (countBlocks[i][j].countColumn == 5) {
         if (blocks[i-2][j].status == Eye.BOMB) {
-          animator.add(new Remover(blocks[i-2][j],  put: Eye.COLORCLEAN));
+          blocks[i-2][j].status = Eye.COLORCLEAN;
         } else {
-          animator.add(new Remover(blocks[i-2][j],  put: Eye.THUNDER));
+          blocks[i-2][j].status = Eye.THUNDER;
         }
       }
       if (countBlocks[i][j].countRow == 5) {
         if (blocks[i][j-2].status == Eye.BOMB) {
-          animator.add(new Remover(blocks[i][j-2],  put: Eye.COLORCLEAN));
+          blocks[i][j-2].status = Eye.COLORCLEAN;
         } else {
-          animator.add(new Remover(blocks[i][j-2],  put: Eye.COLORCLEAN));
+          blocks[i][j-2].status = Eye.COLORCLEAN;
         }
       }
     }
