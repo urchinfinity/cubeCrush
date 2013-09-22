@@ -1,9 +1,9 @@
 part of eyeBurst;
 
 class Eye {
-  static const int NOEMAL = 0;
+  static const int NORMAL = 0;
   static const int BOMB = 1; /// let eyes around it disappear
-  static const int thunder = 2;/// let a cross disappear
+  static const int THUNDER = 2;/// let a cross disappear
   static const int COLORCLEAN = 3;///let one color disappear
   static const int BLUE = 11;
   static const int GREEN = 12;
@@ -12,8 +12,10 @@ class Eye {
   static const int YELLOW = 15;
   
   DivElement _block;
-  int status = NOEMAL; 
+  int _status = NORMAL; 
   int colorNum;
+  bool count = false;
+  
   int posX;
   int posY;
   int top;
@@ -22,16 +24,44 @@ class Eye {
   Eye (this.colorNum, this.left, this.top) {
   }
 
+  void set status(int special) {
+    _status = special;
+  }
+
+  int get status {
+    return _status;
+  }
+  
+  void beClicked() {
+    this._block.classes.add('clicked');
+  }
+  
+  void cancelClicked() {
+    this._block.classes.remove('clicked');
+  }
+
   void destory() {
     _block.remove();
-    _block == null;
+    colorNum = null;
+    count = false;
+    status = NORMAL;
   }
 
   void addColor(int color) {
     ImageElement img = new Element.html('<img src="static/${blockColor[color - 11]}02.png">');
-    img.style.width = px(60);
     _block.nodes.add(img);
 
+  }
+  bool besideClicked(Eye another) {
+    if (this.posX == another.posX && another.posY == this.posY + 1)
+      return true;
+    if (this.posX == another.posX && another.posY == this.posY - 1)
+      return true;
+    if (this.posY == another.posY && another.posX == this.posX + 1)
+      return true;
+    if (this.posY == another.posY && another.posX == this.posX - 1)
+      return true;
+  return false; 
   }
 }
 
@@ -51,9 +81,9 @@ void createBlocks() {
     }
   }
   int blockNum = 0;
- // while(blockNum != column * row) {
-   // blockNum = checkBlocks();
-  //}
+  while(blockNum != column * row) {
+    blockNum = checkBlocks();
+  }
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
       blocks[i][j]._block = new Element.html('<div class="block"></div>');

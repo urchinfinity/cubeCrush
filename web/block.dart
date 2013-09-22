@@ -169,7 +169,8 @@ class Block {
   void addColor(int color) {
     ImageElement img = new Element.html('<img src="static/${blockColor[color]}.png">');
     img.style.width = px(60);
-    _block.nodes.add(img);
+    block.nodes.add(img);
+  }
 
 }
 
@@ -210,6 +211,7 @@ List<List<Block>> blocks;
 List<Flag> flags = new List(4); 
 bool sthClicked = false;
 
+//
 bool besideClicked(Block secondClicked) {
   if ((secondClicked.pos[0] == firstClicked.pos[0] && (secondClicked.pos[1] == firstClicked.pos[1] + 1 || secondClicked.pos[1] == firstClicked.pos[1] - 1))
       || (secondClicked.pos[1] == firstClicked.pos[1] && (secondClicked.pos[0] == firstClicked.pos[0] + 1 || secondClicked.pos[0] == firstClicked.pos[0] - 1)))
@@ -219,6 +221,7 @@ bool besideClicked(Block secondClicked) {
 
 Block firstClicked, secondClicked;
 
+//
 void createBlocks() {
   blocks = new List(column);
   for (int i = 0; i < column; i++) {
@@ -237,15 +240,16 @@ void createBlocks() {
   }
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
-      blocks[i][j]._block = new Element.html('<div class="block"></div>');
-      blocks[i][j]._block.style.left = '${blocks[i][j].left}px';
-      blocks[i][j]._block.style.top = '${blocks[i][j].top}px';
+      blocks[i][j].block = new Element.html('<div class="block"></div>');
+      blocks[i][j].block.style.left = '${blocks[i][j].left}px';
+      blocks[i][j].block.style.top = '${blocks[i][j].top}px';
       blocks[i][j].addColor(blocks[i][j].colorNum);
-      parent.nodes.add(blocks[i][j]._block);
+      parent.nodes.add(blocks[i][j].block);
     }
   }
 }
 
+//
 int checkBlocks() {
   List<List<CountBlock>> countBlocks = findBlocks();
   int blockNum = 0;
@@ -930,6 +934,9 @@ void startEvent(){
   hintButton.onClick.listen((MouseEvent evt) {
     hint();
   });  
+}
+String px(num number) {
+  return "${number}px";
 }
 
 

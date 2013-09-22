@@ -1,13 +1,14 @@
 .block {
   border-radius: 8px;
-  width: 66px;
-  height: 66px;
+  width: 60px;
+  height: 60px;
   margin: 0px;
   border: 0px;
 }
 
 .block img {
-  width: 66px;
+  width: 60px;
+  height: 60px;
 }
 
 

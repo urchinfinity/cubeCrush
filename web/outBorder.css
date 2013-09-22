@@ -1,5 +1,5 @@
 .outBorder {
-  top: 210px;
+  top: 230px;
   width: 952px;
   height: 544px;
 }
@@ -11,6 +11,7 @@
   height: 484px;
   border-radius: 10px;  
   background-color: #360505;
+  overflow: hidden;
 }
 
 .shield {
@@ -46,46 +47,21 @@
   height: 40px;
   padding-left: 20px;
   padding-top: 5px;
+  padding-right: 10px;
   border-radius: 10px;
-  background-color: #360505;
+  background-color: black;
+  text-align: right;
   font-size: 30px;
   color: white;
 }
 
 .timeline {
-  top: 494px;
+  top: 492px;
   left: 0px;
   width: 682px;
-  height: 40px;
-  background-color: #360505;
+  height: 10px;
+  background-color: black;
 }
-
-.time {
-  top: 5px;
-  left: 10px;
-  width: 662px;
-  height: 30px;
-  background-color: #fff;
-}
-
-.timeStart{
-  animation: shorter 60s linear;
-  -webkit-animation: shorter 60s linear;
-  width: 0px;
-}
-
-@keyframes shorter
-{
-from {width: 662px;}
-to   {width: 0px;}
-}
-
-@-webkit-keyframes shorter
-{
-from {width: 662px;}
-to   {width: 0px;}
-}
-
 
 .number, .start {
   top: 200px;
@@ -103,4 +79,10 @@ to   {width: 0px;}
   color: white;
   font-size: 50px;
   padding-top: 10px;
+}
+
+.bat {
+  top: 501px;
+  height: 80px;
+  width: 80px;
 }

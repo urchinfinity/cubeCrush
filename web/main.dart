@@ -10,4 +10,5 @@ Animator animator = new Animator();
 
 void main() {
   stageManager.setStage();
+  stageManager.setEvent();
 }
