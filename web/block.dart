@@ -15,8 +15,7 @@ class Block {
   int multiColor = 0;
   bool skillOn = false;
   bool count = false;
-  List<int> pos = new List(2);
-  
+  List<int> pos = new List(2);  
   Block (this.colorNum, this.left, this.top) {
   }
   
@@ -167,6 +166,12 @@ class Block {
     another.block.classes.add(thunderOn[another.thunder]);
     another.block.classes.add(multiColorOn[another.multiColor]);
   }
+  void addColor(int color) {
+    ImageElement img = new Element.html('<img src="static/${blockColor[color]}.png">');
+    img.style.width = px(60);
+    block.nodes.add(img);
+  }
+
 }
 
 class CountBlock {
@@ -189,7 +194,7 @@ const int  TRANSPARENT = 5;
 const int  BOMB = 6;
 const int THUNDER = 7;
 const int MULTICOLOR = 8;
-const int column = 12;
+const int column = 13;
 const int row  = 7;
 const int size = 60;
 const int border = 8;
@@ -205,6 +210,7 @@ List<List<Block>> blocks;
 List<Flag> flags = new List(4); 
 bool sthClicked = false;
 
+//
 bool besideClicked(Block secondClicked) {
   if ((secondClicked.pos[0] == firstClicked.pos[0] && (secondClicked.pos[1] == firstClicked.pos[1] + 1 || secondClicked.pos[1] == firstClicked.pos[1] - 1))
       || (secondClicked.pos[1] == firstClicked.pos[1] && (secondClicked.pos[0] == firstClicked.pos[0] + 1 || secondClicked.pos[0] == firstClicked.pos[0] - 1)))
@@ -214,6 +220,7 @@ bool besideClicked(Block secondClicked) {
 
 Block firstClicked, secondClicked;
 
+//
 void createBlocks() {
   blocks = new List(column);
   for (int i = 0; i < column; i++) {
@@ -232,14 +239,16 @@ void createBlocks() {
   }
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
-      blocks[i][j].block = new Element.html('<div class="block ${blockColor[blocks[i][j].colorNum]}"></div>');
+      blocks[i][j].block = new Element.html('<div class="block"></div>');
       blocks[i][j].block.style.left = '${blocks[i][j].left}px';
       blocks[i][j].block.style.top = '${blocks[i][j].top}px';
+      blocks[i][j].addColor(blocks[i][j].colorNum);
       parent.nodes.add(blocks[i][j].block);
     }
   }
 }
 
+//
 int checkBlocks() {
   List<List<CountBlock>> countBlocks = findBlocks();
   int blockNum = 0;
@@ -842,14 +851,14 @@ bool after45 = false;
 bool after55 = false;
 
 void startEvent(){
-  searchTimer = new Timer.periodic(new Duration(milliseconds: 1), (_){      
-    if(!(searchLine() || searchBox())) {
-      restart();
-    }
-    else {
-      searchTimer.cancel();
-    }
-  });
+  //searchTimer = new Timer.periodic(new Duration(milliseconds: 1), (_){      
+  //  if(!(searchLine() || searchBox())) {
+  //    restart();
+  //  }
+  //  else {
+  //    searchTimer.cancel();
+  //  }
+  //});
   ///shake after 45s
   Timer s = new Timer(new Duration(seconds: 45), (){
     after45 = true;
@@ -924,6 +933,9 @@ void startEvent(){
   hintButton.onClick.listen((MouseEvent evt) {
     hint();
   });  
+}
+String px(num number) {
+  return "${number}px";
 }
 
 

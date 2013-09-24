@@ -3,25 +3,37 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>BUBBLE BUBBLES</title>
+    <title>Eye Burst</title>
     <link rel="stylesheet" href="cubecrush.css">
-    <link rel="stylesheet" href="block.css">
+    <link rel="stylesheet" href="block.css">    
+    <link rel="stylesheet" href="outBorder.css">
   </head>
   <body>
-    <header>BUBBLE BUBBLES</header>
-    <div id="frame"></div>
-    <div class="score">score:</div>
-    <div class="hint">hint</div>
-    <div class="restart">restart</div>
-    <div class="timeline"><div class="time" id="time"></div></div>
-    <div class="rank">rank:</div>
-    <div class="shield" id="bigShield"></div>
-    <div class="number" id="num"></div>
-    <div class="start" id="start">start</div>
-    <div class="endScoreOut disappear" id="end"><div class="endScoreIn">score :</div></div>
+    <header><img src="static/logo.png"></header>
+    <div class="outBorder" id="outBorder">
+        <div id="frame"></div>
+
+        <div class="shield" id="bigShield"></div>
+        <div class="number" id="num"></div>
+        <div class="start" id="start">start</div>
+
+        <div class="button" id="hint">hint</div>
+        <div class="button" id="restart">restart</div>
+        <div class="button" id="mute">voice</div>
+
+        <div class="score" id="score"></div>
+        <div class="timeline"></div>
+    </div>
+    <div class="output disappear">
+        <div class="rank">rank:</div>
+        <div class="endScoreOut" id="end"><div class="endScoreIn"></div></div>
+    </div>
+    <div class="copyright">
+    Copyright &copy; 2013 Leafinity<br/>https://www.facebook.com/leafinity<br/>illustrator: https://www.facebook.com/YANGMEI.YANG
+    </div>
 
 
-    <script type="application/dart" src="cubecrush.dart"></script>
+    <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
   </body>
 </html>
