@@ -196,7 +196,6 @@ const int border = 8;
 int score = 0;
 
 DivElement parent;
-int max;
 Random random = new Random();
 List<String> blockColor = ['red', 'yellow', 'blue', 'green', 'purple', 'transparent'];
 List<String> bombOn = ['', 'bomb'];
@@ -270,7 +269,7 @@ int checkBlocks() {
 }
 
 void findBlocksX (int count, Block clickedBlock) {
-  max = 5;
+  int max = 5;
   flags[count] = new Flag();
   int pos = clickedBlock.pos[0];
   final y = flags[count].y = clickedBlock.pos[1];
@@ -296,7 +295,7 @@ void findBlocksX (int count, Block clickedBlock) {
 }
 
 void findBlocksY (int count, Block clickedBlock) {
-  max = 5;
+  int max = 5;
   flags[count] = new Flag();
   int pos = clickedBlock.pos[1];
   final x = flags[count].x = clickedBlock.pos[0];
@@ -723,7 +722,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
   for (int i = 2; i < column; i++) {
     for (int j = 0; j < row; j++) {
       if (countBlocks[i][j].countColumn >= 3) {
-        max = j + 3;
+        int max = j + 3;
         if (max >= row) {
           max = row;
         }
@@ -740,7 +739,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
   for (int i = 0; i < column; i++) {
     for (int j = 2; j < row; j++) {
       if (countBlocks[i][j].countRow >= 3) {
-        max = i + 3;
+        int max = i + 3;
         if (max >= column) {
           max = column;
         }

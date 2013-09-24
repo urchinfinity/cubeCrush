@@ -1,5 +1,8 @@
 .red {
-  background-color: #ff0563;
+  background-image: url('redeye.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  
 }
 
 .yellow {

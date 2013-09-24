@@ -1,4 +1,6 @@
 name: cubeCrush
 description: A sample web application
 dependencies:
+  http_server: any
+  route: any
   browser: any
