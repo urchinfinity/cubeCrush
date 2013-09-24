@@ -63,9 +63,19 @@ class Eye {
     temp = this._clickedImg;
     this._clickedImg = another._clickedImg;
     another._clickedImg = temp;
+  }  
+
+  equel(Eye another){
+    this._block = another._block;
+    this.colorNum = another.colorNum;
+    this.status = another.status;
+    this._img = another._img;
+    this._clickedImg = another._clickedImg;
   }
 
   void destory() {
+    if (colorNum == null)
+      return;
     print('${_block.runtimeType},$posX,$posY');
     _block.remove();
     _block = null;
@@ -76,11 +86,12 @@ class Eye {
 
   void addColor(int color) {
     _img = new Element.html('<img src="static/${blockColor[color - 11]}02.png">');
-    _clickedImg = new Element.html('<img src="static/${blockColor[colorNum - 11]}Clicked.png">');
+    _clickedImg = new Element.html('<img src="static/${blockColor[color - 11]}Clicked.png">');
     _clickedImg.classes.add('disappear');
     _block.nodes.add(_img);
     _block.nodes.add(_clickedImg);
   }
+
   bool besideClicked(Eye another) {
     if (this.posX == another.posX && another.posY == this.posY + 1)
       return true;
@@ -91,6 +102,14 @@ class Eye {
     if (this.posY == another.posY && another.posX == this.posX - 1)
       return true;
   return false; 
+  }
+
+  void create() {
+    _block = new Element.html('<div class="block"></div>');
+    parent.nodes.add(_block);
+    _block.style.top = px(top);
+    _block.style.left = px(left);
+    addColor(colorNum);
   }
 }
 

@@ -9,7 +9,7 @@ StageManager stageManager = new StageManager();
 DivElement pos;
 
 class StageManager {
-  bool sthClicked;
+  bool sthClicked = false;
   Eye firstClicked, secondClicked;
   int stage = 0;
   int score = 0;
@@ -33,6 +33,7 @@ class StageManager {
 
   void setEvent() {
     pos = query('#outBorder');
+    animator.add(new Score(query('#score')));
     parent.onClick.listen((MouseEvent event) {
       int clickPosX, clickPosY;
       clickPosX = (event.page.x - pos.offsetLeft).toInt();
@@ -49,7 +50,7 @@ class StageManager {
         firstClicked = blocks[clickPosX][clickPosY];
         firstClicked.beClicked();
       } else {
-        if (blocks[clickPosX][clickPosY] == firstClicked) {    // click the same block
+        if (blocks[clickPosX][clickPosY] == firstClicked) { // click the same block
           sthClicked = false;
           firstClicked.cancelClicked();
           firstClicked = null;
@@ -57,7 +58,7 @@ class StageManager {
           sthClicked = false;
           secondClicked = blocks[clickPosX][clickPosY];
           secondClicked.beClicked();
-          Changer changer = new Changer(300);
+          Changer changer = new Changer(200);
           changer._pickEyes(firstClicked, secondClicked);
           sthClicked = false;
           animator.add(changer);

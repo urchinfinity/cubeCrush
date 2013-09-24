@@ -1,6 +1,7 @@
 part of eyeBurst;
 
 GameManager gameManager = new GameManager();
+ControlFaller controlFaller = new ControlFaller();
 
 class GameManager implements Actor {
   bool end = false;
@@ -47,39 +48,45 @@ print("add remover ${i},${j-k}");
         }
       }
     }
-    stageManager.score +=  crushBlocks * cleanTimes;
+    stageManager.score +=  crushBlocks * cleanTimes * 100;
 print('$crush');
     return crush;
   }
 
-  void controlFall() {
-
-  }
-  
-  //create eyes
-  //make eyes fall
-  //score
-  //output
-
-  //restart
-  //destroy
-
-  void next(int time) {
+  void next(num time) {
     if (stageManager.stage == 0) {
       animator.add(new startor());
       stageManager.stage++;
     } else if (end){
       //output
-    } else if (time >= 64000){
-      end = true;
-    } else if (time >= 48000){
-      //shake
-    } else if (time >= 42000){
-      //shakeB
-    } else if (executing = true) {
-      //ControlFaller controlFaller = new ControlFaller();
-      //controlFaller.findfall();
-      executing = false;
+print('end');
+    } else {
+      if (time >= 64000){
+        end = true;
+      } else if (time >= 48000){
+        //shake2
+        for(int i = 0; i < column; i++){
+          for(int j = 0; j < row; j++){
+            if(blocks[i][j].colorNum != null) {
+              blocks[i][j]._block.classes.remove('shake');
+              blocks[i][j]._block.classes.add('shakeB');
+            }
+          }
+        }
+      } else if (time >= 42000){
+        //shake
+        for(int i = 0; i < column; i++){
+          for(int j = 0; j < row; j++){
+            if(blocks[i][j].colorNum != null) {
+              blocks[i][j]._block.classes.add('shake');
+            }
+          }
+        }
+      }
+      if (executing) {
+        controlFaller.findfall();
+        executing = false;
+      }
     }
   }
 }
@@ -185,33 +192,110 @@ print("rm ${removed.status},${removed.runtimeType}");
   }
 }
 
-class Faller implements Actor {//create and fall
-  faller(){}
-  void next(num time){}
-}
-class score implements Actor {
-  void next(num time){}
-}
-class ControlFaller {
-  List<int> columns;
-
-  controlFaller() {
-    columns = new List();
-    for (int i = 0; i < column; i++){
-      columns.add(i);
+class Score implements Actor {
+  int times = 0;
+  DivElement showScore;
+  Score(this.showScore){}
+  void next(num time){
+    if(times > 3){
+      times = 0;
+      showScore.text = "${stageManager.score}";
     }
+    times++;
+  }
+}
+
+class Faller implements Actor {//create and fall
+  Eye falling;
+  int startingPoint;
+  int distance;
+  num velocity;
+  num firstCall;
+  int wholeTime;
+  int perTime = 200;
+
+  Faller(Eye a, int fallNum, int top){
+    falling = a;
+    distance = fallNum * (border + size);
+    wholeTime = perTime * fallNum;
+    velocity = (border + size) / perTime;
+    startingPoint = top;
   }
 
+  void next(num time){
+    if (firstCall == null) {
+      firstCall = time;
+    } else if (time - firstCall >= wholeTime){
+      falling._block.style.top = px(falling.top);
+      animator.remove(this);
+    } else {
+      falling._block.style.top = px(startingPoint + (velocity * (time - firstCall)).toInt());
+    }
+  }
+}
+
+class ControlFaller {
   void findfall(){
-    if (columns.length == 0)
-      return;
-    for (final int columId in columns){
+    int max = 0;
+    for (int i = 0; i < column; i++){
+      int top;
+      int newDiv = 0;
       for (int j = row - 1; j >= 0; j--){
-        if(j == 0){
-          columns.remove(columId); 
+        int nullNum = 0;
+        if (blocks[i][j].colorNum == null){
+          for (int k = j; k >= 0; k--) {
+            if (blocks[i][k].colorNum != null){
+              break;
+            }
+            nullNum++;
+          } 
+          if (nullNum != 0){
+print('2: ${i}, ${j}, nullNum: ${nullNum}, newDiv: ${newDiv}');
+            if(j - nullNum < 0){
+              newDiv++;
+              int topOfEye = newDiv * size * (-1) - border * (newDiv - 1);
+              int leftOfEye = border + (size + border) * i;
+              Eye eye = new Eye(random.nextInt(5) + 11, leftOfEye, topOfEye);
+              eye.create();
+              blocks[i][j].equel(eye);
+              top = topOfEye;
+              nullNum = nullNum + newDiv - 1;           
+            } else {
+              blocks[i][j].swap(blocks[i][j - nullNum]);
+              top = blocks[i][j - nullNum].top;
+            }
+            animator.add(new Faller(blocks[i][j], nullNum, top));
+            if (nullNum > max) {
+              max = nullNum;
+            }
+          }
         }
       }
     }
+    if (max > 0) {
+      animator.add(new Controlremover(max));
+      gameManager.executing = false;
+    }
+  }
+}
+
+class Controlremover implements Actor {
+  int maximum;
+  num firstCall;
+
+  Controlremover(int max) {
+    maximum = max * 201;
+  }
+
+  void next(num time) {
+    if (firstCall == null){
+      firstCall = time;
+    }
+    if (time - firstCall > maximum) {
+      gameManager.controlremover();
+      animator.remove(this);
+      gameManager.executing = true;
+   }
   }
 }
 

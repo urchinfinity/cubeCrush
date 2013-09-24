@@ -135,6 +135,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
           for (int y = j; y < max; y++) {
             if (countBlocks[x][y].countRow >= 3) {
               blocks[x][j].status = Eye.BOMB;
+              stageManager.score += 1005;
             }
           }
         }
@@ -152,6 +153,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
           for (int y = j - countBlocks[i][j].countRow + 1; y <= j; y++) {
             if (countBlocks[x][y].countColumn >= 3) {
               blocks[i][y].status = Eye.BOMB;
+              stageManager.score += 1005;
             }
           }
         }
@@ -166,15 +168,19 @@ void findCross(List<List<CountBlock>> countBlocks) {
       if (countBlocks[i][j].countColumn == 5) {
         if (blocks[i-2][j].status == Eye.BOMB) {
           blocks[i-2][j].status = Eye.COLORCLEAN;
+          stageManager.score += 2005;
         } else {
           blocks[i-2][j].status = Eye.THUNDER;
+          stageManager.score += 1005;
         }
       }
       if (countBlocks[i][j].countRow == 5) {
         if (blocks[i][j-2].status == Eye.BOMB) {
           blocks[i][j-2].status = Eye.COLORCLEAN;
+          stageManager.score += 2005;
         } else {
-          blocks[i][j-2].status = Eye.COLORCLEAN;
+          blocks[i][j-2].status = Eye.THUNDER;
+          stageManager.score += 1005;
         }
       }
     }
