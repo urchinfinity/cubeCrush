@@ -186,3 +186,61 @@ void findCross(List<List<CountBlock>> countBlocks) {
     }
   }
 }
+
+void skill(Eye a) {
+  if (a.status == Eye.BOMB) {
+    int minX = a.posX - 1;
+    int maxX = a.posX + 2;
+    int minY = a.posY - 1;
+    int maxY = a.posY + 2;
+    if (minX < 0) {
+      minX = 0;
+    }
+    if (minY < 0) {
+      minY = 0;
+    }
+    if (maxX > column) {
+      maxX = column;
+    }
+    if (maxY > row) {
+      maxY = row;
+    }
+    for (int i = minX; i < maxX; i++) {
+      for (int j = minY; j < maxY; j++) {
+        animator.add(new Remover(blocks[i][j]));
+        if (blocks[i][j].count == false) {
+          stageManager.score += 8888;
+          blocks[i][j].count = true;
+        }
+      }
+    }
+  } else if (a.status == Eye.THUNDER) {
+    for (int i = 0; i < column; i++) {
+      animator.add(new Remover(blocks[i][a.posY]));
+      if (blocks[i][a.posX].count == false) {
+        stageManager.score += 8888;
+        blocks[i][a.posY].count = true;
+      }
+    }
+    for (int j = 0; j < row; j++) {
+       animator.add(new Remover(blocks[a.posX][j]));
+      if (blocks[a.posX][j].count == false) {
+        stageManager.score += 8888;
+        blocks[a.posX][j].count = true;
+      }
+    }
+  } else if (a.status == Eye.COLORCLEAN) {
+    int color = a.colorNum;
+    for (int i = 0; i < column; i++) {
+      for (int j = 0; j < row; j++) {
+        if (blocks[i][j].colorNum == color) {
+          animator.add(new Remover(blocks[i][j]));
+          if (blocks[i][j].count == false) {
+            stageManager.score += 10000;
+            blocks[i][j].count = true;
+          }
+        }
+      }
+    }
+  }
+}
