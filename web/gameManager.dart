@@ -7,10 +7,11 @@ class GameManager implements Actor {
   bool end = false;
   bool executing = false;
   bool falling = false;
+  int shakeTimes = 0;
   
   //check
   int cleanTimes = 1;
-  int shakeTimes = 0;
+
   bool controlremover() {
     int crushBlocks = 0;
     bool crush = false;
@@ -51,6 +52,7 @@ print("add remover ${i},${j-k}");
         }
       }
     }
+    animator.add(new OpenSkillOn());
     stageManager.score +=  crushBlocks * cleanTimes * 100;
 print('$crush');
     return crush;
@@ -63,37 +65,37 @@ print('$crush');
     } else if (end){
       //output
     } else {
-      if (time >= 64000){
-        query('#bigShield').classes.remove('disappear');
-        end = true;
-      } else if (time >= 48000){
-        //shake2
-        if(shakeTimes > 3) {
-          for(int i = 0; i < column; i++){
-            for(int j = 0; j < row; j++){
-              if(blocks[i][j].colorNum != null) {
-                blocks[i][j]._block.classes.remove('shake');
-                blocks[i][j]._block.classes.add('shakeB');
-              }
-            }
-          }
-          shakeTimes = 0;
-        } else
-          shakeTimes++;
-      } else if (time >= 42000){
-        //shake
-        if(shakeTimes > 3) {
-          for(int i = 0; i < column; i++){
-            for(int j = 0; j < row; j++){
-              if(blocks[i][j].colorNum != null) {
-                blocks[i][j]._block.classes.add('shake');
-              }
-            }
-          }
-          shakeTimes = 0;
-        } else
-          shakeTimes++;
-      }
+      //if (time >= 64000){
+      //  query('#bigShield').classes.remove('disappear');
+      //  //end = true;
+      //} else if (time >= 48000){
+      //  //shake2
+      //  if(shakeTimes > 3) {
+      //    for(int i = 0; i < column; i++){
+      //      for(int j = 0; j < row; j++){
+      //        if(blocks[i][j].colorNum != null) {
+      //          blocks[i][j]._block.classes.remove('shake');
+      //          blocks[i][j]._block.classes.add('shakeB');
+      //        }
+      //      }
+      //    }
+      //    shakeTimes = 0;
+      //  } else
+      //    shakeTimes++;
+      //} else if (time >= 42000){
+      //  //shake
+      //  if(shakeTimes > 3) {
+      //    for(int i = 0; i < column; i++){
+      //      for(int j = 0; j < row; j++){
+      //        if(blocks[i][j].colorNum != null) {
+      //          blocks[i][j]._block.classes.add('shake');
+      //        }
+      //      }
+      //    }
+      //    shakeTimes = 0;
+      //  } else
+      //    shakeTimes++;
+      //}
       if (executing) {
         falling = true;
         controlFaller.findfall();
@@ -195,12 +197,11 @@ class Remover implements Actor {
   void next(num time){
     if (callTimes >= 8){
 print("rm ${removed.status},${removed.runtimeType}");
-      if (removed.status != Eye.NORMAL && removed.skillOn == false)
-        removed.skillOn = true;
-      else if (removed.colorNum != null)
+      if (removed.status != Eye.NORMAL && removed.skillOn == false);
+      else if (removed.colorNum != null) {
         removed.destory();
+      }
       animator.remove(this);
-      gameManager.executing = true;
     } 
     callTimes++;
   }
@@ -311,6 +312,28 @@ class Controlremover implements Actor {
       animator.remove(this);
       gameManager.executing = true;
    }
+  }
+}
+
+class OpenSkillOn implements Actor {
+  int times = 0;
+
+  void next(num time) {
+    print('in OpenSkillOn');
+    if (times == 10) {
+      print('already open');
+      for (int i = 0; i < column; i++) {
+        for (int j = 0; j < row; j++) {
+          if (blocks[i][j].status != Eye.NORMAL) {
+            blocks[i][j].skillOn = true;
+          }
+        }
+      }
+      gameManager.executing = true;
+      animator.remove(this);
+    }
+    print('$times');
+    times++;
   }
 }
 

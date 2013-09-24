@@ -217,7 +217,7 @@ void skill(Eye a) {
   } else if (a.status == Eye.THUNDER) {
     for (int i = 0; i < column; i++) {
       animator.add(new Remover(blocks[i][a.posY]));
-      if (blocks[i][a.posX].count == false) {
+      if (blocks[i][a.posY].count == false) {
         stageManager.score += 8888;
         blocks[i][a.posY].count = true;
       }
