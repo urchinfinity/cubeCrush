@@ -7,9 +7,11 @@ class GameManager implements Actor {
   bool end = false;
   bool executing = false;
   bool falling = false;
+  int shakeTimes = 0;
   
   //check
   int cleanTimes = 1;
+
   bool controlremover() {
     int crushBlocks = 0;
     bool crush = false;
@@ -25,6 +27,8 @@ print('first: $crush');
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
 print("add remover ${i-k},$j");
+            if (blocks[i-k][j].skillOn)
+              skill(blocks[i-k][j]);
             animator.add(new Remover(blocks[i-k][j]));
             crush = true;
             /// count score
@@ -48,6 +52,7 @@ print("add remover ${i},${j-k}");
         }
       }
     }
+    animator.add(new OpenSkillOn());
     stageManager.score +=  crushBlocks * cleanTimes * 100;
 print('$crush');
     return crush;
@@ -59,31 +64,40 @@ print('$crush');
       stageManager.stage++;
     } else if (end){
       //output
-print('end');
     } else {
-      if (time >= 64000){
-        end = true;
-      } else if (time >= 48000){
-        //shake2
-        for(int i = 0; i < column; i++){
-          for(int j = 0; j < row; j++){
-            if(blocks[i][j].colorNum != null) {
-              blocks[i][j]._block.classes.remove('shake');
-              blocks[i][j]._block.classes.add('shakeB');
-            }
-          }
-        }
-      } else if (time >= 42000){
-        //shake
-        for(int i = 0; i < column; i++){
-          for(int j = 0; j < row; j++){
-            if(blocks[i][j].colorNum != null) {
-              blocks[i][j]._block.classes.add('shake');
-            }
-          }
-        }
-      }
+      //if (time >= 64000){
+      //  query('#bigShield').classes.remove('disappear');
+      //  //end = true;
+      //} else if (time >= 48000){
+      //  //shake2
+      //  if(shakeTimes > 3) {
+      //    for(int i = 0; i < column; i++){
+      //      for(int j = 0; j < row; j++){
+      //        if(blocks[i][j].colorNum != null) {
+      //          blocks[i][j]._block.classes.remove('shake');
+      //          blocks[i][j]._block.classes.add('shakeB');
+      //        }
+      //      }
+      //    }
+      //    shakeTimes = 0;
+      //  } else
+      //    shakeTimes++;
+      //} else if (time >= 42000){
+      //  //shake
+      //  if(shakeTimes > 3) {
+      //    for(int i = 0; i < column; i++){
+      //      for(int j = 0; j < row; j++){
+      //        if(blocks[i][j].colorNum != null) {
+      //          blocks[i][j]._block.classes.add('shake');
+      //        }
+      //      }
+      //    }
+      //    shakeTimes = 0;
+      //  } else
+      //    shakeTimes++;
+      //}
       if (executing) {
+        falling = true;
         controlFaller.findfall();
         executing = false;
       }
@@ -181,13 +195,14 @@ class Remover implements Actor {
   }
   
   void next(num time){
-    if(callTimes >= 8){
+    if (callTimes >= 8){
 print("rm ${removed.status},${removed.runtimeType}");
-      if(removed.status == Eye.NORMAL)
+      if (removed.status != Eye.NORMAL && removed.skillOn == false);
+      else if (removed.colorNum != null) {
         removed.destory();
+      }
       animator.remove(this);
-      gameManager.executing = true;
-    }
+    } 
     callTimes++;
   }
 }
@@ -268,6 +283,7 @@ print('2: ${i}, ${j}, nullNum: ${nullNum}, newDiv: ${newDiv}');
             if (nullNum > max) {
               max = nullNum;
             }
+            gameManager.falling = false;
           }
         }
       }
@@ -291,11 +307,33 @@ class Controlremover implements Actor {
     if (firstCall == null){
       firstCall = time;
     }
-    if (time - firstCall > maximum) {
+    if (time - firstCall > maximum && !gameManager.falling) {
       gameManager.controlremover();
       animator.remove(this);
       gameManager.executing = true;
    }
+  }
+}
+
+class OpenSkillOn implements Actor {
+  int times = 0;
+
+  void next(num time) {
+    print('in OpenSkillOn');
+    if (times == 10) {
+      print('already open');
+      for (int i = 0; i < column; i++) {
+        for (int j = 0; j < row; j++) {
+          if (blocks[i][j].status != Eye.NORMAL) {
+            blocks[i][j].skillOn = true;
+          }
+        }
+      }
+      gameManager.executing = true;
+      animator.remove(this);
+    }
+    print('$times');
+    times++;
   }
 }
 

@@ -17,6 +17,7 @@ class Eye {
   int _status = NORMAL; 
   int colorNum;
   bool count = false;
+  bool skillOn = false;
   
   int posX;
   int posY;
