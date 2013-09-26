@@ -62,27 +62,13 @@ print('$crush');
     if (stageManager.stage == 0) {
       animator.add(new startor());
       stageManager.stage++;
-    } else if (end){
+    } //else if (end){
       //output
-    } else {
+    //} else {
       //if (time >= 64000){
       //  query('#bigShield').classes.remove('disappear');
       //  //end = true;
       //} else if (time >= 48000){
-      //  //shake2
-      //  if(shakeTimes > 3) {
-      //    for(int i = 0; i < column; i++){
-      //      for(int j = 0; j < row; j++){
-      //        if(blocks[i][j].colorNum != null) {
-      //          blocks[i][j]._block.classes.remove('shake');
-      //          blocks[i][j]._block.classes.add('shakeB');
-      //        }
-      //      }
-      //    }
-      //    shakeTimes = 0;
-      //  } else
-      //    shakeTimes++;
-      //} else if (time >= 42000){
       //  //shake
       //  if(shakeTimes > 3) {
       //    for(int i = 0; i < column; i++){
@@ -96,11 +82,11 @@ print('$crush');
       //  } else
       //    shakeTimes++;
       //}
-      if (executing) {
-        falling = true;
-        controlFaller.findfall();
-        executing = false;
-      }
+    //}
+    if (executing) {
+      falling = true;
+      controlFaller.findfall();
+      executing = false;
     }
   }
 }

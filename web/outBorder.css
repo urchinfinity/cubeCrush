@@ -24,12 +24,14 @@
   left: 902px;
   width: 50px;
   height: 50px;
-  border-radius: 25px;
-  background-color: #360505;
   font-size: 20px;
   text-align: center;
   padding-top: 12px;
   color: white;
+}
+
+.button img {
+  height: 50px;
 }
 
 #restart {
@@ -42,9 +44,9 @@
 }
 
 .score{
-  top: 494px;
-  left: 692px;
-  width: 200px;
+  top: 517px;
+  left: 722px;
+  width: 170px;
   height: 40px;
   padding-left: 20px;
   padding-top: 5px;
@@ -57,33 +59,36 @@
 }
 
 .timeline {
-  top: 492px;
+  top: 517px;
   left: 0px;
   width: 682px;
   height: 10px;
   background-color: black;
 }
 
-.number, .start {
-  top: 200px;
-  left: 296px;
+.start {
+  top: 170px;
+  left: 350px;
   width: 300px;
   height: 84px;
-  text-align: center;
-  color: white;
   font-size: 50px;
 }
 
-.start {  
-  border-radius: 10px;
-  background-color: orange;
-  color: white;
-  font-size: 50px;
-  padding-top: 10px;
+.start img{  
+  height: 150px;
+}
+
+.number {
+  height: 340px;
+  left: 400px;
+}
+
+.number img {
+  height: 30px;
 }
 
 .bat {
-  top: 501px;
+  top: 506px;
   height: 80px;
   width: 80px;
 }
