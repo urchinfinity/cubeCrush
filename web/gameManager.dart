@@ -27,12 +27,13 @@ print('first: $crush');
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
 print("add remover ${i-k},$j");
-            if (blocks[i-k][j].skillOn)
+            if (blocks[i-k][j].skillOn) {
               skill(blocks[i-k][j]);
+            }
             animator.add(new Remover(blocks[i-k][j]));
             crush = true;
             /// count score
-            if (blocks[i-k][j].count == false) {
+            if (!blocks[i-k][j].count) {
               crushBlocks++;
               blocks[i-k][j].count = true;
             }
@@ -41,10 +42,13 @@ print("add remover ${i-k},$j");
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
 print("add remover ${i},${j-k}");
+            if (blocks[i-k][j].skillOn) {
+              skill(blocks[i-k][j]);
+            }
             animator.add(new Remover(blocks[i][j-k]));
             crush = true;
             //count score
-            if (blocks[i][j-k].count == false) {
+            if (!blocks[i][j-k].count) {
               crushBlocks++;
               blocks[i][j-k].count = true;
             }
