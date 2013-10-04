@@ -73,7 +73,15 @@ class StageManager {
     query('#start').onClick.listen((MouseEvent event) {
       animator.add(gameManager);
       animator.start();
-    });    
+    }); 
+    query('#hint').onClick.listen((MouseEvent event) {
+      animator.add(gameManager);
+      animator.start();
+    });
+    query('#restart').onClick.listen((MouseEvent event) {
+      animator.add(gameManager);
+      animator.start();
+    }); 
   }
 
   void setTimer() {

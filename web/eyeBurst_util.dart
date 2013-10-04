@@ -245,3 +245,85 @@ print("in thunder");
     }
   }
 }
+
+bool removeChanger(Eye a) {
+  int i;
+  int color = a.colorNum;
+  int start;
+  int countX = 0, countY = 0;
+  List<Eye> removersX = new List();
+  List<Eye> removersY = new List();
+print('( ${a.posX}, ${a.posY}): $color');
+  for (i = a.posX; i >= 0; i--) {
+    if (blocks[i][a.posY].colorNum == null || blocks[i][a.posY].falling == true || blocks[i][a.posY].colorNum != color) {
+      break;
+    }
+    start = i;
+    print('( $i, ${a.posY}): ${blocks[i][a.posY].colorNum}');
+  }
+  print("xtop: $start");
+  for (i = start; i < column; i++) {
+    if(blocks[i][a.posY].colorNum == null || blocks[i][a.posY].falling || blocks[i][a.posY].colorNum != color) {
+      break;
+    }
+    countX++;
+    removersX.add(blocks[i][a.posY]);
+  }
+print('countX: $countX');
+  for (i = a.posY; i >= 0; i--) {
+    if (blocks[a.posX][i].colorNum == null || blocks[a.posX][i].falling || blocks[a.posX][i].colorNum != color) {
+      break;
+    }
+    start = i;
+    print('( ${a.posX}, ${i}): ${blocks[a.posX][i].colorNum}');
+  }
+  print("ytop: $start");
+  
+  for (i = start; i < row; i++) {
+    if(blocks[a.posX][i].colorNum == null || blocks[a.posX][i].falling || blocks[a.posX][i].colorNum != color) {
+      break;
+    }
+    countY++;
+    removersX.add(blocks[a.posX][i]);
+  }
+print('countY: $countY');
+  if((countX >= 5 && countY >= 3) || (countY >= 5 && countX >= 3)){
+    a.status = Eye.COLORCLEAN;
+
+    for(final eye in removersX)
+      animator.add(new Remover(eye));
+    for(final eye in removersY)
+      animator.add(new Remover(eye));
+
+    return true;
+
+  } else if (countX >= 5 || countY >= 5) {
+    a.status = Eye.THUNDER;
+
+    for(final eye in removersX)
+      animator.add(new Remover(eye));
+    for(final eye in removersY)
+      animator.add(new Remover(eye));
+
+    return true;
+
+  } else if (countX >= 3 && countY >= 3){
+    a.status = Eye.BOMB;
+
+    for(final eye in removersX)
+      animator.add(new Remover(eye));
+    for(final eye in removersY)
+      animator.add(new Remover(eye));
+
+    return true;
+  }
+  if(countX >= 3 || countY >= 3) {    
+    for(final eye in removersX)
+      animator.add(new Remover(eye));
+    for(final eye in removersY)
+      animator.add(new Remover(eye));
+
+    return true;
+  }
+  return false;
+}

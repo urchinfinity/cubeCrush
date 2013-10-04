@@ -1,7 +1,6 @@
 part of eyeBurst;
 
 GameManager gameManager = new GameManager();
-ControlFaller controlFaller = new ControlFaller();
 
 class GameManager implements Actor {
   bool end = false;
@@ -42,8 +41,8 @@ print("add remover ${i-k},$j");
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
 print("add remover ${i},${j-k}");
-            if (blocks[i-k][j].skillOn) {
-              skill(blocks[i-k][j]);
+            if (blocks[i][j-k].skillOn) {
+              skill(blocks[i][j-k]);
             }
             animator.add(new Remover(blocks[i][j-k]));
             crush = true;
@@ -58,21 +57,20 @@ print("add remover ${i},${j-k}");
     }
     animator.add(new OpenSkillOn());
     stageManager.score +=  crushBlocks * cleanTimes * 100;
-print('$crush');
     return crush;
   }
 
   void next(num time) {
     if (stageManager.stage == 0) {
-      animator.add(new startor());
+      animator.add(new Startor());
       stageManager.stage++;
     } //else if (end){
       //output
     //} else {
-      //if (time >= 64000){
+      //if (time >= 363800){
       //  query('#bigShield').classes.remove('disappear');
       //  //end = true;
-      //} else if (time >= 48000){
+      //} else if (time >= 363700){
       //  //shake
       //  if(shakeTimes > 3) {
       //    for(int i = 0; i < column; i++){
@@ -87,11 +85,6 @@ print('$crush');
       //    shakeTimes++;
       //}
     //}
-    if (executing) {
-      falling = true;
-      controlFaller.findfall();
-      executing = false;
-    }
   }
 }
 
@@ -131,7 +124,9 @@ class Changer implements Actor {
     }
   }
   void report(){
-    if (!gameManager.controlremover()) {
+    bool boolA = removeChanger(a);
+    bool boolB = removeChanger(b);
+    if (!(boolA || boolB)) {
       print('failed');
       if(changeTimes == 1){
         print('remove changer');
@@ -144,7 +139,7 @@ class Changer implements Actor {
     } else {
       print('remove changer');
       animator.remove(this);
-      gameManager.executing = true;
+      animator.add(new ControlFaller());
     }
   }
   void next(num time){
@@ -185,7 +180,7 @@ class Remover implements Actor {
   }
   
   void next(num time){
-    if (callTimes >= 8){
+    if (callTimes >= 10){
 print("rm ${removed.status},${removed.runtimeType}");
       if (removed.status != Eye.NORMAL && removed.skillOn == false);
       else if (removed.colorNum != null) {
@@ -225,22 +220,35 @@ class Faller implements Actor {//create and fall
     wholeTime = perTime * fallNum;
     velocity = (border + size) / perTime;
     startingPoint = top;
+    a.falling = true;
   }
 
   void next(num time){
+    if(falling.colorNum == null){
+      falling.falling = false;
+      animator.remove(this);
+      return;
+    }
     if (firstCall == null) {
       firstCall = time;
     } else if (time - firstCall >= wholeTime){
       falling._block.style.top = px(falling.top);
+      falling.falling = false;
       animator.remove(this);
+
     } else {
       falling._block.style.top = px(startingPoint + (velocity * (time - firstCall)).toInt());
     }
   }
 }
 
-class ControlFaller {
-  void findfall(){
+class ControlFaller implements Actor {
+  int times = 0;
+  void next(num time){
+    if (times == 0) {
+      times++;
+      return;
+    }
     int max = 0;
     for (int i = 0; i < column; i++){
       int top;
@@ -255,7 +263,6 @@ class ControlFaller {
             nullNum++;
           } 
           if (nullNum != 0){
-print('2: ${i}, ${j}, nullNum: ${nullNum}, newDiv: ${newDiv}');
             if(j - nullNum < 0){
               newDiv++;
               int topOfEye = newDiv * size * (-1) - border * (newDiv - 1);
@@ -280,7 +287,7 @@ print('2: ${i}, ${j}, nullNum: ${nullNum}, newDiv: ${newDiv}');
     }
     if (max > 0) {
       animator.add(new Controlremover(max));
-      gameManager.executing = false;
+      animator.remove(this);
     }
   }
 }
@@ -300,7 +307,7 @@ class Controlremover implements Actor {
     if (time - firstCall > maximum && !gameManager.falling) {
       gameManager.controlremover();
       animator.remove(this);
-      gameManager.executing = true;
+      animator.add(new ControlFaller());
    }
   }
 }
@@ -310,7 +317,7 @@ class OpenSkillOn implements Actor {
 
   void next(num time) {
     print('in OpenSkillOn');
-    if (times == 10) {
+    if (times == 12) {
       print('already open');
       for (int i = 0; i < column; i++) {
         for (int j = 0; j < row; j++) {
@@ -327,24 +334,65 @@ class OpenSkillOn implements Actor {
   }
 }
 
-class startor implements Actor {
-  DivElement show;
+class Startor implements Actor {
+  double displacement;
+  double a1;
+  double a2;
+  double a3;
+  double a4;
+  double dis;
+  double dis2;
+  double vMax;
+  double _vMax;
+
+  Startor() {
+    a1 = 1.44 / 800;
+    a2 = 1.44 / 1700;
+    dis = (14 * 1.44);
+    _vMax = dis / (120 + 16);
+    a3 = _vMax / 16;
+    a4 = _vMax / 120;
+    vMax = 1.44;
+  }
   next(num time) {
-    if (time >= 4000) {
-      query('#bigShield').classes.add('disappear');
-      show.classes.add('disappear');
-      animator.remove(this);
-    } else if (time >= 3200) {
-      show.text = 'START';
-    } else if (time >= 2400) {
-      show.text = '1';
-    } else if (time >= 1600) {
-      show.text = '2';
-    } else if (time >= 800) {
-      show = query('#num');
-      show.text = '3';
-    } else {
+    if (time >= 3800) {
       query('#start').classes.add('disappear');
+      query('#numS').classes.add('disappear');
+      query('#bigShield').classes.add('disappear'); 
+      animator.remove(this);
+      return;
+    } else if (time >= 2600) {
+      query('#numS').classes.remove('disappear');
+      query('#num1').classes.add('disappear');
+    } else if (time >= 1800) {
+      query('#num1').classes.remove('disappear');
+      query('#num2').classes.add('disappear');
+    } else if (time >= 1000) {
+      query('#num2').classes.remove('disappear');
+      query('#num3').classes.add('disappear');
+    } else if (time >= 200) {
+      query('#start').classes.add('rotate');
+      query('#num3').classes.remove('disappear');
     }
   }
+}
+
+class ControlEnder implements Actor {
+  num firstCall;
+
+  void next(num time) {
+    if (firstCall == null)
+      firstCall = time;
+    //bat turn to front
+    //show score
+    //scoreboard tune to 0 degree
+    //blackshield turnfrom 90 degree
+    //when 150 degree -> zoom in && output appear
+    //turn to 190 degree and back to 180
+    //zoom in
+  }
+}
+
+double aToDisplacement(double a, num t) {
+  return (a * t * t)/2;
 }
