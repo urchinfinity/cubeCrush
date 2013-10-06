@@ -188,63 +188,16 @@ void findCross(List<List<CountBlock>> countBlocks) {
 }
 
 void skill(Eye a) {
+print('(${a.posX},${a.posY})${a.status}');
   if (a.status == Eye.BOMB) {
-    int minX = a.posX - 1;
-    int maxX = a.posX + 2;
-    int minY = a.posY - 1;
-    int maxY = a.posY + 2;
-    if (minX < 0) {
-      minX = 0;
-    }
-    if (minY < 0) {
-      minY = 0;
-    }
-    if (maxX > column) {
-      maxX = column;
-    }
-    if (maxY > row) {
-      maxY = row;
-    }
-    for (int i = minX; i < maxX; i++) {
-      for (int j = minY; j < maxY; j++) {
-        animator.add(new Remover(blocks[i][j]));
-        if (blocks[i][j].count == false) {
-          stageManager.score += 8888;
-          blocks[i][j].count = true;
-        }
-      }
-    }
+    animator.add(new Boon(a));
   } else if (a.status == Eye.THUNDER) {
-print("in thunder");
-    for (int i = 0; i < column; i++) {
-      animator.add(new Remover(blocks[i][a.posY]));
-      if (blocks[i][a.posY].count == false) {
-        stageManager.score += 8888;
-        blocks[i][a.posY].count = true;
-      }
-    }
-    for (int j = 0; j < row; j++) {
-       animator.add(new Remover(blocks[a.posX][j]));
-      if (blocks[a.posX][j].count == false) {
-        stageManager.score += 8888;
-        blocks[a.posX][j].count = true;
-      }
-    }
+    animator.add(new Hoooon(a));
   } else if (a.status == Eye.COLORCLEAN) {
-    int color = a.colorNum;
-    for (int i = 0; i < column; i++) {
-      for (int j = 0; j < row; j++) {
-        if (blocks[i][j].colorNum == color) {
-          animator.add(new Remover(blocks[i][j]));
-          if (blocks[i][j].count == false) {
-            stageManager.score += 10000;
-            blocks[i][j].count = true;
-          }
-        }
-      }
-    }
+    animator.add(new CleanColor(a));
   }
 }
+
 
 bool removeChanger(Eye a) {
   int i;
@@ -253,15 +206,12 @@ bool removeChanger(Eye a) {
   int countX = 0, countY = 0;
   List<Eye> removersX = new List();
   List<Eye> removersY = new List();
-print('( ${a.posX}, ${a.posY}): $color');
   for (i = a.posX; i >= 0; i--) {
     if (blocks[i][a.posY].colorNum == null || blocks[i][a.posY].falling == true || blocks[i][a.posY].colorNum != color) {
       break;
     }
     start = i;
-    print('( $i, ${a.posY}): ${blocks[i][a.posY].colorNum}');
   }
-  print("xtop: $start");
   for (i = start; i < column; i++) {
     if(blocks[i][a.posY].colorNum == null || blocks[i][a.posY].falling || blocks[i][a.posY].colorNum != color) {
       break;
@@ -269,15 +219,12 @@ print('( ${a.posX}, ${a.posY}): $color');
     countX++;
     removersX.add(blocks[i][a.posY]);
   }
-print('countX: $countX');
   for (i = a.posY; i >= 0; i--) {
     if (blocks[a.posX][i].colorNum == null || blocks[a.posX][i].falling || blocks[a.posX][i].colorNum != color) {
       break;
     }
     start = i;
-    print('( ${a.posX}, ${i}): ${blocks[a.posX][i].colorNum}');
   }
-  print("ytop: $start");
   
   for (i = start; i < row; i++) {
     if(blocks[a.posX][i].colorNum == null || blocks[a.posX][i].falling || blocks[a.posX][i].colorNum != color) {
@@ -286,7 +233,6 @@ print('countX: $countX');
     countY++;
     removersX.add(blocks[a.posX][i]);
   }
-print('countY: $countY');
   if((countX >= 5 && countY >= 3) || (countY >= 5 && countX >= 3)){
     a.status = Eye.COLORCLEAN;
 
@@ -326,4 +272,111 @@ print('countY: $countY');
     return true;
   }
   return false;
+}
+
+class Boon implements Actor {
+  int minX;
+  int maxX;
+  int minY;
+  int maxY;
+  int addNum;
+  int times = 0;
+  Eye a;
+  
+  Boon(Eye _a) {
+    minX = _a.posX - 1 <= 0 ? 0: _a.posX - 1;
+    maxX = _a.posX + 2 >= column ? column: _a.posX + 2;
+    minY = _a.posY - 1 <= 0 ? 0: _a.posY - 1;
+    maxY = _a.posY + 2 >= row ? row: _a.posY + 2;
+    addNum = size + border;
+    a = _a;
+  }
+  
+  void next(num time){
+print('boon');
+    if(times == 9) {
+      for (int i = minX; i < maxX; i++) {
+        for (int j = minY; j < maxY; j++) {
+          blocks[i][j].destory();
+          if (blocks[i][j].count == false) {
+            stageManager.score += 8888;
+            blocks[i][j].count = true;
+          }
+        }
+      }
+      animator.remove(this);
+    } else if (times == 0){
+      a._block.classes.add('frontest');
+print('booon');
+    } else if (times == 7){
+      a._block.style.top = px(a.top - (size +border));
+      a._block.style.left = px(a.left - (size +border));
+      a._block.style.width = px(3 * size + 2 * border);
+      a._block.style.height = px(3 * size + 2 * border);
+    } else if(times < 7) {
+      addNum = addNum ~/ 2;
+      a._block.style.top = px(a.top - addNum);
+      a._block.style.left = px(a.left - addNum);
+      a._block.style.width = px(size + 2 * addNum);
+      a._block.style.height = px(size + 2 * addNum);
+    }
+  }
+}
+
+class Hoooon implements Actor {
+  Eye a;
+
+  Hoooon(Eye _a) {
+    a = _a;
+  }
+ void next(num time) {
+  animator.remove(this);
+  return;
+ }
+//  for (int i = 0; i < column; i++) {
+//    animator.add(new Remover(blocks[i][a.posY]));
+//    if (blocks[i][a.posY].count == false) {
+//      stageManager.score += 8888;
+//      blocks[i][a.posY].count = true;
+//    }
+//  }
+//  for (int j = 0; j < row; j++) {
+//     animator.add(new Remover(blocks[a.posX][j]));
+//    if (blocks[a.posX][j].count == false) {
+//      stageManager.score += 8888;
+//      blocks[a.posX][j].count = true;
+//    }
+//  }
+}
+
+class CleanColor implements Actor {
+  int color;
+  int times = 0;
+  Eye a;
+  
+  CleanColor(Eye _a) {
+    color = _a.colorNum;
+    a = _a;
+  }
+
+  void next(num time) {
+    if(times == 9) {
+      for (int i = 0; i < column; i++) {
+        for (int j = 0; j < row; j++) {
+          if (blocks[i][j].colorNum == color) {
+            blocks[i][j].destory();
+            if (blocks[i][j].count == false) {
+              stageManager.score += 10000;
+              blocks[i][j].count = true;
+            }
+          }
+        }
+      }
+      animator.remove(this);
+    }
+    if (times == 0) {
+      a._img.classes.add('rotateToDispear');
+    }
+    times ++;
+  }
 }

@@ -51,7 +51,7 @@
   background-image: url('multicolor.png');
 }
 
-.clicked{
+.clicked {
   -webkit-box-shadow: 0px 0px 22px rgba(255, 255, 255, 0.72);
   -moz-box-shadow:    0px 0px 22px rgba(255, 255, 255, 0.72);
   box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);
@@ -69,4 +69,25 @@ to   {box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);}
 {
 from {box-shadow:         0px 0px 0px rgba(255, 255, 255, 0.72);}
 to   {box-shadow:         0px 0px 22px rgba(255, 255, 255, 0.72);}
+}
+
+.frontest {
+  z-index: 300;
+}
+
+.rotateToDispear {
+  animation: rd 0.3s ease-out;
+  -webkit-animation: rd 0.3s ease-out;
+}
+
+@keyframes rd
+{
+from {left: 0; top: 0; width: 60px; height: 60px; transfrom: rotate(0deg);}
+to   {left: 30px; top: 30px; width: 0px; height: 0px; transfrom: rotate(720deg);}
+}
+
+@-webkit-keyframes rd
+{
+from {left: 0; top: 0; width: 60px; height: 60px; transfrom: rotate(0deg);}
+to   {left: 30px; top: 30px; width: 0px; height: 0px; transfrom: rotate(720deg);}
 }

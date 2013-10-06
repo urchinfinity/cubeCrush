@@ -14,7 +14,6 @@ class GameManager implements Actor {
   bool controlremover() {
     int crushBlocks = 0;
     bool crush = false;
-print('first: $crush');
     cleanTimes++;
     List<List<CountBlock>> countBlocks = findBlocks();
     //put bomb
@@ -25,9 +24,9 @@ print('first: $crush');
       for (int j = row - 1; j >= 0; j--) {
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
-print("add remover ${i-k},$j");
             if (blocks[i-k][j].skillOn) {
               skill(blocks[i-k][j]);
+print('skillOn');
             }
             animator.add(new Remover(blocks[i-k][j]));
             crush = true;
@@ -40,11 +39,12 @@ print("add remover ${i-k},$j");
         }
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
-print("add remover ${i},${j-k}");
             if (blocks[i][j-k].skillOn) {
+print('skillOn');
               skill(blocks[i][j-k]);
+            } else {
+              animator.add(new Remover(blocks[i][j-k]));
             }
-            animator.add(new Remover(blocks[i][j-k]));
             crush = true;
             //count score
             if (!blocks[i][j-k].count) {
@@ -127,9 +127,7 @@ class Changer implements Actor {
     bool boolA = removeChanger(a);
     bool boolB = removeChanger(b);
     if (!(boolA || boolB)) {
-      print('failed');
       if(changeTimes == 1){
-        print('remove changer');
         animator.remove(this);
         return;
       }
@@ -137,7 +135,6 @@ class Changer implements Actor {
       _pickEyes(a, b);
       firstCall = null;
     } else {
-      print('remove changer');
       animator.remove(this);
       animator.add(new ControlFaller());
     }
@@ -156,7 +153,6 @@ class Changer implements Actor {
       }
       a.cancelClicked();
       b.cancelClicked();
-print("swap $a, $b");
       a.swap(b);
       report();
       return;
@@ -181,7 +177,6 @@ class Remover implements Actor {
   
   void next(num time){
     if (callTimes >= 10){
-print("rm ${removed.status},${removed.runtimeType}");
       if (removed.status != Eye.NORMAL && removed.skillOn == false);
       else if (removed.colorNum != null) {
         removed.destory();
@@ -316,20 +311,18 @@ class OpenSkillOn implements Actor {
   int times = 0;
 
   void next(num time) {
-    print('in OpenSkillOn');
     if (times == 12) {
-      print('already open');
       for (int i = 0; i < column; i++) {
         for (int j = 0; j < row; j++) {
           if (blocks[i][j].status != Eye.NORMAL) {
             blocks[i][j].skillOn = true;
+print('($i, $j): skillOn');
           }
         }
       }
       gameManager.executing = true;
       animator.remove(this);
     }
-    print('$times');
     times++;
   }
 }

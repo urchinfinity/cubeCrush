@@ -78,12 +78,11 @@ class Eye {
   void destory() {
     if (colorNum == null)
       return;
-    print('${_block.runtimeType},$posX,$posY');
     _block.remove();
     _block = null;
     colorNum = null;
     count = false;
-    status = NORMAL;
+    //status = NORMAL;
   }
 
   void addColor(int color) {
@@ -122,8 +121,8 @@ void createBlocks() {
   for (int i = 0; i < column; i++) {
     blocks[i] = new List(row);
     for (int j = 0; j < row; j++) {
-      int left = i * (size + border) + outborder;
-      int top = j * (size + border) + outborder;
+      int left = i * (size + border) + border;
+      int top = j * (size + border) + border;
       int color = random.nextInt(5) + 11;
       blocks[i][j] = new Eye(color, left, top);
       blocks[i][j].posX = i;

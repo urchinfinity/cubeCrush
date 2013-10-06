@@ -40,8 +40,8 @@ class StageManager {
       clickPosY = (event.page.y - pos.offsetTop).toInt();
       if(onBorder(clickPosX, clickPosY))
           return;
-      clickPosX = (clickPosX / (size + border)).toInt();
-      clickPosY = (clickPosY / (size + border)).toInt();
+      clickPosX = clickPosX ~/ (size + border);
+      clickPosY = clickPosY ~/ (size + border);
       if(blocks[clickPosX][clickPosY]._block == null){
         return;
       }
