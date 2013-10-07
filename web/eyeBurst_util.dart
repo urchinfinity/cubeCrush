@@ -135,6 +135,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
           for (int y = j; y < max; y++) {
             if (countBlocks[x][y].countRow >= 3) {
               blocks[x][j].status = Eye.BOMB;
+              blocks[x][j].setSpecial(Eye.BOMB);
               stageManager.score += 1005;
             }
           }
@@ -153,6 +154,7 @@ void findBomb(List<List<CountBlock>> countBlocks) {
           for (int y = j - countBlocks[i][j].countRow + 1; y <= j; y++) {
             if (countBlocks[x][y].countColumn >= 3) {
               blocks[i][y].status = Eye.BOMB;
+              blocks[i][y].setSpecial(Eye.BOMB);
               stageManager.score += 1005;
             }
           }
@@ -168,17 +170,21 @@ void findCross(List<List<CountBlock>> countBlocks) {
       if (countBlocks[i][j].countColumn == 5) {
         if (blocks[i-2][j].status == Eye.BOMB) {
           blocks[i-2][j].status = Eye.COLORCLEAN;
+          blocks[i-2][j].setSpecial(Eye.COLORCLEAN);
           stageManager.score += 2005;
         } else {
           blocks[i-2][j].status = Eye.THUNDER;
+          blocks[i-2][j].setSpecial(Eye.THUNDER);
           stageManager.score += 1005;
         }
       }
       if (countBlocks[i][j].countRow == 5) {
         if (blocks[i][j-2].status == Eye.BOMB) {
           blocks[i][j-2].status = Eye.COLORCLEAN;
+          blocks[i][j-2].status = Eye.COLORCLEAN;
           stageManager.score += 2005;
         } else {
+          blocks[i][j-2].status = Eye.THUNDER;
           blocks[i][j-2].status = Eye.THUNDER;
           stageManager.score += 1005;
         }
@@ -193,8 +199,6 @@ print('(${a.posX},${a.posY})${a.status}');
     animator.add(new Boon(a));
   } else if (a.status == Eye.THUNDER) {
     animator.add(new Hoooon(a));
-  } else if (a.status == Eye.COLORCLEAN) {
-    animator.add(new CleanColor(a));
   }
 }
 
@@ -235,32 +239,38 @@ bool removeChanger(Eye a) {
   }
   if((countX >= 5 && countY >= 3) || (countY >= 5 && countX >= 3)){
     a.status = Eye.COLORCLEAN;
+    a.setSpecial(Eye.COLORCLEAN);
 
     for(final eye in removersX)
       animator.add(new Remover(eye));
     for(final eye in removersY)
       animator.add(new Remover(eye));
 
+    animator.add(new OpenSkillOn());
     return true;
 
   } else if (countX >= 5 || countY >= 5) {
     a.status = Eye.THUNDER;
+    a.setSpecial(Eye.THUNDER);
 
     for(final eye in removersX)
       animator.add(new Remover(eye));
     for(final eye in removersY)
       animator.add(new Remover(eye));
-
+    
+    animator.add(new OpenSkillOn());
     return true;
 
   } else if (countX >= 3 && countY >= 3){
     a.status = Eye.BOMB;
+    a.setSpecial(Eye.BOMB);
 
     for(final eye in removersX)
       animator.add(new Remover(eye));
     for(final eye in removersY)
       animator.add(new Remover(eye));
 
+    animator.add(new OpenSkillOn());
     return true;
   }
   if(countX >= 3 || countY >= 3) {    
@@ -293,21 +303,19 @@ class Boon implements Actor {
   }
   
   void next(num time){
-print('boon');
     if(times == 9) {
       for (int i = minX; i < maxX; i++) {
         for (int j = minY; j < maxY; j++) {
-          blocks[i][j].destory();
           if (blocks[i][j].count == false) {
             stageManager.score += 8888;
             blocks[i][j].count = true;
           }
+          blocks[i][j].destory();
         }
       }
       animator.remove(this);
     } else if (times == 0){
       a._block.classes.add('frontest');
-print('booon');
     } else if (times == 7){
       a._block.style.top = px(a.top - (size +border));
       a._block.style.left = px(a.left - (size +border));
@@ -320,10 +328,12 @@ print('booon');
       a._block.style.width = px(size + 2 * addNum);
       a._block.style.height = px(size + 2 * addNum);
     }
+    times++;
   }
 }
 
 class Hoooon implements Actor {
+  int times = 0;
   Eye a;
 
   Hoooon(Eye _a) {
@@ -354,13 +364,14 @@ class CleanColor implements Actor {
   int times = 0;
   Eye a;
   
-  CleanColor(Eye _a) {
-    color = _a.colorNum;
+  CleanColor(int _color, Eye _a) {
+    color = _color;
     a = _a;
   }
 
   void next(num time) {
     if(times == 9) {
+      a.destory();
       for (int i = 0; i < column; i++) {
         for (int j = 0; j < row; j++) {
           if (blocks[i][j].colorNum == color) {
@@ -375,6 +386,13 @@ class CleanColor implements Actor {
       animator.remove(this);
     }
     if (times == 0) {
+      for (int i = 0; i < column; i++) {
+        for (int j = 0; j < row; j++) {
+          if (blocks[i][j].colorNum == color) {
+            blocks[i][j]._img.classes.add('rotateToDispear');
+          }
+        }
+      }
       a._img.classes.add('rotateToDispear');
     }
     times ++;

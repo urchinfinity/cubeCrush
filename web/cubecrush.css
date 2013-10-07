@@ -1,4 +1,4 @@
-#frame, .block, .score, header, .rank, .button, .time, .timeline, .number, .shield, .start, .endScoreOut, .endScoreIn, .outBorder, .copyright, .output, .bat {
+#frame, .block, .score, header, .rank, .button, .time, .timeline, .number, .shield, .start, .endScoreOut, .endScoreIn, .outBorder, .copyright, .output, .bat ,.batShield, .scoreShow {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -86,23 +86,52 @@ header > img {
 100%% {-webkit-transform: rotate(5deg);}
 }
 
-.output{
-  top: 120px;
+.output {
+  top: 150px;
   left: 0;
   width: 100%;
-  background-color: #FFB538;
+  background-color: rgb(255,125,0);
 }
 
-.rank{
-  left: 950px;
-  top: 80px;
-  width: 300px;
+.rank {
+  top: 40px;
+  width: 400px;
   height: 484px;
-  border-radius: 10px;
-  background-color: #360505;
-  color: #fff;
   font-size: 30px;
   padding-left: 10px;
   padding-top: 10px;
 }
 
+.rank img {
+  width: 400px;
+}
+
+.output>img {
+  position: absolute;
+  top: 40px;
+  width: 500px;
+}
+
+.batShield {
+  overflow: hidden;
+}
+
+.batShield img {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;  
+  position: absolute;
+  top: -150px;
+  left: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.scoreShow {
+  width: 100px;
+}

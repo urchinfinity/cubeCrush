@@ -24,8 +24,11 @@ class StageManager {
   
   void setStage() {    
     query('.copyright').style.top = window.innerHeight - 110 >= 861? px(window.innerHeight - 110): px(861);
+    query('#output').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
+    query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
-    query('.output').style.height = px(window.innerHeight - 240);
+    query('#monster').style.left = px((window.innerWidth - 890) / 2);
+    query('#rank').style.left = px((window.innerWidth - 890) / 2 + 475);
     setTimer();
     parent = query("#frame");
     createBlocks();
