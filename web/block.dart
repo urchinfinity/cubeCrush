@@ -887,13 +887,13 @@ void startEvent(){
     List<int> clickPos = new List(4);
     clickPos[0] = (event.page.x - parent.offsetLeft).toInt();
     clickPos[1] = (event.page.y - parent.offsetTop).toInt(); 
-    clickPos[2] = (clickPos[0] / (size + border)).toInt();
-    clickPos[3] = (clickPos[1] / (size + border)).toInt();
+    //clickPos[2] = (clickPos[0] / (size + border)).toInt();
+    //clickPos[3] = (clickPos[1] / (size + border)).toInt();
     if ((clickPos[2] < column && clickPos[3] < row && clickPos[0] % (size + border) > border && clickPos[1] % (size + border) > border)
         ||(clickPos[2] < column && clickPos[0] % (size + border) > border && clickPos[3] == row && clickPos[3] % (size + border) == 0) 
         ||(clickPos[2] == column && clickPos[0] % (size + border) == 0 && clickPos[3] < row && clickPos[3] % (size + border) > border)) {
-      clickPos[0] = clickPos[2] - (clickPos[2] / column).toInt();
-      clickPos[1] = clickPos[3] - (clickPos[3] / row).toInt();
+     // clickPos[0] = clickPos[2] - (clickPos[2] / column).toInt();
+     // clickPos[1] = clickPos[3] - (clickPos[3] / row).toInt();
       if (!sthClicked) {
         sthClicked = true;
         firstClicked = blocks[clickPos[0]][clickPos[1]];

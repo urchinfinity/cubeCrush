@@ -10,6 +10,9 @@
   </head>
   <body>
     <header><img src="static/logo.png"></header>
+    <div class="copyright">
+    Copyright &copy; 2013 Leafinity<br/>https://www.facebook.com/leafinity<br/>illustrator: https://www.facebook.com/YANGMEI.YANG
+    </div></div>
     <div class="outBorder" id="outBorder">
         <div id="frame"></div>
 
@@ -27,13 +30,13 @@
         <div class="score" id="score"></div>
         <div class="timeline"></div>
     </div>
-    <div class="output disappear">
-        <div class="rank">rank:</div>
+    <div class="output" id="output">
         <div class="endScoreOut" id="end"><div class="endScoreIn"></div></div>
+        <img src="static/monster1.png" id="monster">
+        <div class="rank" id="rank"><img src="static/rank.png"></div>
     </div>
-    <div class="copyright">
-    Copyright &copy; 2013 Leafinity<br/>https://www.facebook.com/leafinity<br/>illustrator: https://www.facebook.com/YANGMEI.YANG
-    </div>
+    <div class="output batShield disappear" id="batShield"><img src="static/blackShield.png"></div>
+    <img src="static/scoreBat.png" class="scoreShow" id="scoreShow">
 
 
     <script type="application/dart" src="main.dart"></script>

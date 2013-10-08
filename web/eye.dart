@@ -14,6 +14,7 @@ class Eye {
   DivElement _block;
   ImageElement _img;
   ImageElement _clickedImg;
+  ImageElement _specialImg;
   int _status = NORMAL; 
   int colorNum;
   bool count = false;
@@ -36,6 +37,19 @@ class Eye {
     return _status;
   }
   
+  void setSpecial(int special) {
+    if (special != NORMAL && _block != null) {
+      if (_specialImg != null) {
+        _specialImg.remove();
+        _specialImg = null;
+      }
+      _specialImg = new Element.html('<img src="static/${status == BOMB? "bomb": status == THUNDER? "thunder": "red02"}.png">');
+      _block.nodes.add(_specialImg);
+    } else if (special == NORMAL && _specialImg != null) {
+      _specialImg.remove();
+    }
+  }
+
   void beClicked() {
     _img.classes.add('disappear');
     _clickedImg.classes.remove('disappear');
@@ -50,40 +64,58 @@ class Eye {
 
   void swap(Eye another) {
     var temp;
+
     temp = this._block;
     this._block = another._block;
     another._block = temp;
+
     temp = this.colorNum;
     this.colorNum = another.colorNum;
     another.colorNum = temp;
-    temp = this.status;
-    this.status = another.status;
-    another.status = temp;
+
     temp = this._img;
     this._img = another._img;
     another._img = temp;
+
     temp = this._clickedImg;
     this._clickedImg = another._clickedImg;
     another._clickedImg = temp;
+
+    temp = this.status;
+    this.status = another.status;
+    another.status = temp;
+
+    temp = this.skillOn;
+    this.skillOn = another.skillOn;
+    another.skillOn = temp;
+
+    temp = this.falling;
+    this.falling = another.falling;
+    another.falling = temp;
   }  
 
   equel(Eye another){
     this._block = another._block;
     this.colorNum = another.colorNum;
     this.status = another.status;
-    this._img = another._img;
     this._clickedImg = another._clickedImg;
+    this._specialImg = another._specialImg;
+    this.falling = another.falling;
+    this.skillOn = another.skillOn;
   }
 
   void destory() {
     if (colorNum == null)
       return;
-    print('${_block.runtimeType},$posX,$posY');
     _block.remove();
     _block = null;
     colorNum = null;
     count = false;
-    status = NORMAL;
+    if (_specialImg != null) {
+      _specialImg.remove();
+      _specialImg = null;
+    }
+    //status = NORMAL;
   }
 
   void addColor(int color) {
@@ -122,8 +154,8 @@ void createBlocks() {
   for (int i = 0; i < column; i++) {
     blocks[i] = new List(row);
     for (int j = 0; j < row; j++) {
-      int left = i * (size + border) + outborder;
-      int top = j * (size + border) + outborder;
+      int left = i * (size + border) + border;
+      int top = j * (size + border) + border;
       int color = random.nextInt(5) + 11;
       blocks[i][j] = new Eye(color, left, top);
       blocks[i][j].posX = i;
