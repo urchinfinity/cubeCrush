@@ -27,8 +27,8 @@ class StageManager {
     query('#output').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
-    query('#monster').style.left = px((window.innerWidth - 890) / 2);
-    query('#rank').style.left = px((window.innerWidth - 890) / 2 + 475);
+    query('#monster').style.left = px((window.innerWidth - 910) / 2);
+    query('#rank').style.left = px((window.innerWidth - 910) / 2 + 500);
     setTimer();
     parent = query("#frame");
     createBlocks();

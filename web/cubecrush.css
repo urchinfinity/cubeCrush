@@ -94,7 +94,7 @@ header > img {
 }
 
 .rank {
-  top: 40px;
+  top: 55px;
   width: 400px;
   height: 484px;
   font-size: 30px;
@@ -109,7 +109,7 @@ header > img {
 .output>img {
   position: absolute;
   top: 40px;
-  width: 500px;
+  width: 540px;
 }
 
 .batShield {
