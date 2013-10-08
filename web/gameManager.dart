@@ -14,7 +14,6 @@ class GameManager implements Actor {
   bool controlremover() {
     int crushBlocks = 0;
     bool crush = false;
-print('first: $crush');
     cleanTimes++;
     List<List<CountBlock>> countBlocks = findBlocks();
     //put bomb
@@ -25,9 +24,10 @@ print('first: $crush');
       for (int j = row - 1; j >= 0; j--) {
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
-print("add remover ${i-k},$j");
-            if (blocks[i-k][j].skillOn) {
+            if (blocks[i-k][j].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!!!
               skill(blocks[i-k][j]);
+print("boooooooooooooooooon");
+              break;
             }
             animator.add(new Remover(blocks[i-k][j]));
             crush = true;
@@ -40,11 +40,12 @@ print("add remover ${i-k},$j");
         }
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
-print("add remover ${i},${j-k}");
-            if (blocks[i][j-k].skillOn) {
+            if (blocks[i][j-k].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!
               skill(blocks[i][j-k]);
+print('booooooooooooooooooon');
+            } else {
+              animator.add(new Remover(blocks[i][j-k]));
             }
-            animator.add(new Remover(blocks[i][j-k]));
             crush = true;
             //count score
             if (!blocks[i][j-k].count) {
@@ -67,10 +68,10 @@ print("add remover ${i},${j-k}");
     } //else if (end){
       //output
     //} else {
-      //if (time >= 363800){
-      //  query('#bigShield').classes.remove('disappear');
-      //  //end = true;
-      //} else if (time >= 363700){
+      if (time >= 363800){
+        query('#bigShield').classes.remove('disappear');
+        end = true;
+      }// else if (time >= 363700){
       //  //shake
       //  if(shakeTimes > 3) {
       //    for(int i = 0; i < column; i++){
@@ -123,13 +124,23 @@ class Changer implements Actor {
       b = _b;
     }
   }
+
   void report(){
+    if (a.status == Eye.COLORCLEAN ){
+      animator.add(new CleanColor(b.colorNum, a));
+      animator.remove(this);
+      animator.add(new ControlFaller());
+      return;
+    } else if (b.status == Eye.COLORCLEAN) {
+      animator.add(new CleanColor(a.colorNum, b));
+      animator.remove(this);
+      animator.add(new ControlFaller());
+      return;
+    }
     bool boolA = removeChanger(a);
     bool boolB = removeChanger(b);
     if (!(boolA || boolB)) {
-      print('failed');
       if(changeTimes == 1){
-        print('remove changer');
         animator.remove(this);
         return;
       }
@@ -137,11 +148,11 @@ class Changer implements Actor {
       _pickEyes(a, b);
       firstCall = null;
     } else {
-      print('remove changer');
       animator.remove(this);
       animator.add(new ControlFaller());
     }
   }
+
   void next(num time){
     if (firstCall == null){
       firstCall = time;
@@ -156,7 +167,6 @@ class Changer implements Actor {
       }
       a.cancelClicked();
       b.cancelClicked();
-print("swap $a, $b");
       a.swap(b);
       report();
       return;
@@ -181,7 +191,6 @@ class Remover implements Actor {
   
   void next(num time){
     if (callTimes >= 10){
-print("rm ${removed.status},${removed.runtimeType}");
       if (removed.status != Eye.NORMAL && removed.skillOn == false);
       else if (removed.colorNum != null) {
         removed.destory();
@@ -316,20 +325,20 @@ class OpenSkillOn implements Actor {
   int times = 0;
 
   void next(num time) {
-    print('in OpenSkillOn');
     if (times == 12) {
-      print('already open');
       for (int i = 0; i < column; i++) {
         for (int j = 0; j < row; j++) {
-          if (blocks[i][j].status != Eye.NORMAL) {
+          if (blocks[i][j].status == Eye.BOMB || blocks[i][j].status == Eye.THUNDER) {
             blocks[i][j].skillOn = true;
+print('($i, $j): skillOn, ${blocks[i][j].status}, ${blocks[i][j].skillOn}');
+          } else {
+            blocks[i][j].skillOn = false;
           }
         }
       }
       gameManager.executing = true;
       animator.remove(this);
     }
-    print('$times');
     times++;
   }
 }
@@ -379,12 +388,17 @@ class Startor implements Actor {
 
 class ControlEnder implements Actor {
   num firstCall;
+  bool showedScore = false;
 
   void next(num time) {
-    if (firstCall == null)
+    if (firstCall == null) {
       firstCall = time;
-    //bat turn to front
-    //show score
+      //bat turn to front
+    } else if (showedScore) {
+      //add animation
+    } else if (time - firstCall >= 3000 || showedScore == false) {
+      //show score
+    } 
     //scoreboard tune to 0 degree
     //blackshield turnfrom 90 degree
     //when 150 degree -> zoom in && output appear
