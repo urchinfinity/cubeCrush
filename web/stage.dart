@@ -1,10 +1,5 @@
 part of eyeBurst;
 
-abstract class ActorX extends Actor {
-  void create();
-  void destroy();
-}
-
 StageManager stageManager = new StageManager();
 DivElement pos;
 
@@ -13,6 +8,9 @@ class StageManager {
   Eye firstClicked, secondClicked;
   int stage = 0;
   int score = 0;
+  int rank;
+  String usrName;
+  bool firstStart = true;
 
   bool onBorder(int x, int y) {
     if(x % 68 > 0 && x % 68 < 8)
@@ -24,17 +22,112 @@ class StageManager {
   
   void setStage() {    
     query('.copyright').style.top = window.innerHeight - 110 >= 861? px(window.innerHeight - 110): px(861);
-    query('#output').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
+    query('#submitboard').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
+    query('#scoreShow').style.left = px((window.innerWidth - 420) / 2 );
+    query('#score2').style.left = px((window.innerWidth - 420) / 2 + 60);
+    query('#monsterShadow').style.left = px((window.innerWidth - 540) / 2);
+    query('#sbmt').style.left = px((window.innerWidth - 540) / 2 + 430);
+    query('#bloodSubmit').style.left = px((window.innerWidth - 540) / 2 + 430);
+    query('#input').style.left = px((window.innerWidth - 540) / 2 + 140);
     query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
-    query('#monster').style.left = px((window.innerWidth - 910) / 2);
-    query('#rank').style.left = px((window.innerWidth - 910) / 2 + 500);
     setTimer();
     parent = query("#frame");
     createBlocks();
   }
 
+  void setOutput() {
+    query('#output').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
+    query('#rank').style.left = px((window.innerWidth - 910) / 2 + 500);
+    for (int i = 0; i < 5; i++) {
+      query('#monster$i').style.left = px((window.innerWidth - 930) / 2);
+    }
+    query('#re2').style.left = px((window.innerWidth - 910) / 2 + 565);
+    query('#lastscore').style.left = px((window.innerWidth - 910) / 2 + 760);
+    query('#scoreNum').style.left = px((window.innerWidth - 910) / 2 + 785);
+    query('#scoreNum').text = "${stageManager.score}";
+    setRestart();
+  }
+
+  void setRestart() {
+    query('#re2').onClick.listen((MouseEvent evt){
+      query('#output').classes.add('disappear');
+      restart();
+    });
+  }
+
   void setEvent() {
+    InputElement submit = query("#sbmt");
+    //submit hover
+    submit.onMouseOver.listen((MouseEvent evt) {
+      submit.style.left = px((window.innerWidth - 540) / 2 + 433);
+      submit.style.top = px(262);
+      submit.style.width = px(104);
+    });
+    submit.onMouseOut.listen((MouseEvent evt) {
+      submit.style.left = px((window.innerWidth - 540) / 2 + 430);
+      submit.style.top = px(260);
+      submit.style.width = px(110);
+    });
+    submit.onClick.listen((MouseEvent evt) {
+      InputElement name = query('#input'); 
+      if(name.value != "") {
+      usrName = name.value;
+      
+      query('#submitboard').classes.add('disappear');
+
+      query('#start').onClick.listen((MouseEvent event) {
+        animator.add(gameManager);
+        animator.start();
+        if(firstStart){
+          firstStart = false;
+          setEvent2();
+        }
+      });
+      } else {
+        query('#bloodSubmit').classes.remove('disappear');
+        new Timer(new Duration(seconds: 1),(){
+          query('#bloodSubmit').classes.add('disappear');
+        });
+      }
+    });submit.onMouseOver.listen((MouseEvent evt) {
+      submit.style.left = px((window.innerWidth - 540) / 2 + 433);
+      submit.style.top = px(262);
+      submit.style.width = px(104);
+    });
+    submit.onMouseOut.listen((MouseEvent evt) {
+      submit.style.left = px((window.innerWidth - 540) / 2 + 430);
+      submit.style.top = px(260);
+      submit.style.width = px(110);
+    });
+
+    document.onKeyDown.listen((KeyboardEvent evt){
+      if(evt.keyCode == 13){
+        InputElement name = query('#input'); 
+        if(name.value != "") {
+          usrName = name.value;
+        
+          query('#submitboard').classes.add('disappear');
+  
+          query('#start').onClick.listen((MouseEvent event) {
+            animator.add(gameManager);
+            animator.start();
+            if(firstStart){
+              firstStart = false;
+              setEvent2();
+            }
+          });
+        } else {
+          query('#bloodSubmit').classes.remove('disappear');
+          new Timer(new Duration(seconds: 1),(){
+            query('#bloodSubmit').classes.add('disappear');
+          });
+        }
+      }
+    });
+  }
+
+  void setEvent2() {
     pos = query('#outBorder');
     animator.add(new Score(query('#score')));
     parent.onClick.listen((MouseEvent event) {
@@ -72,18 +165,10 @@ class StageManager {
         } 
       } 
     });
-
-    query('#start').onClick.listen((MouseEvent event) {
-      animator.add(gameManager);
-      animator.start();
-    }); 
     query('#hint').onClick.listen((MouseEvent event) {
-      animator.add(gameManager);
-      animator.start();
     });
     query('#restart').onClick.listen((MouseEvent event) {
-      animator.add(gameManager);
-      animator.start();
+      restart();
     }); 
   }
 

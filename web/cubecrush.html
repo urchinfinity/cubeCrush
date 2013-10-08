@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="cubecrush.css">
     <link rel="stylesheet" href="block.css">    
     <link rel="stylesheet" href="outBorder.css">
+    <link rel="stylesheet" href="output.css">
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sniglet">
   </head>
   <body>
     <header><img src="static/logo.png"></header>
@@ -30,13 +33,30 @@
         <div class="score" id="score"></div>
         <div class="timeline"></div>
     </div>
-    <div class="output" id="output">
-        <div class="endScoreOut" id="end"><div class="endScoreIn"></div></div>
-        <img src="static/monster1.png" id="monster">
+
+    <div class="output disappear" id="output">
+        <img src="static/restart2.png" id="re2">
+        <img src="static/score.png" id="lastscore">
+        <div id="scoreNum"></div>
+        <img src="static/monster1.png" id="monster0" class="disappear">
+        <img src="static/monster2.png" id="monster1" class="disappear">
+        <img src="static/monster3.png" id="monster2" class="disappear">
+        <img src="static/monster4.png" id="monster3" class="disappear">
+        <img src="static/monster5.png" id="monster4" class="disappear">
         <div class="rank" id="rank"><img src="static/rank.png"></div>
     </div>
+
     <div class="output batShield disappear" id="batShield"><img src="static/blackShield.png"></div>
-    <img src="static/scoreBat.png" class="scoreShow" id="scoreShow">
+
+    <img src="static/scoreBat.png" class="scoreShow disappear" id="scoreShow">
+    <div id="score2" class="score2 disappear"></div>
+    
+    <div class="output" id="submitboard">
+        <img src="static/input.png" id="monsterShadow">
+        <input type="text" id="input" maxlength="9" autocomplete="on" autofocus>
+        <input type="image" src="static/submit.png" alt="Submit" id="sbmt">
+        <img src="static/submit_red.png" id="bloodSubmit" class="disappear">
+    </div>
 
 
     <script type="application/dart" src="main.dart"></script>

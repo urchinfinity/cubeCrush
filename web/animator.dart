@@ -16,13 +16,13 @@ class Animator {
       for (final Actor actor in new List.from(actors)) {
         actor.next(now);
       }
-
+      
       if (_running)
         window.requestAnimationFrame(_callback);
     };
   }
 
-  final List<Actor> actors = [];
+  List<Actor> actors = [];
 
   void add(Actor actor){
     actors.add(actor);
@@ -34,11 +34,13 @@ class Animator {
   void start() {
     if (!_running) {
       _running = true;
+      _whenStarted = null;
       window.requestAnimationFrame(_callback);
     }
   }
   void stop() {
     _running = false;
+    actors = [];
   }
 }
 
