@@ -23,17 +23,10 @@ class StageManager {
   void setStage() {    
     query('.copyright').style.top = window.innerHeight - 110 >= 861? px(window.innerHeight - 110): px(861);
     query('#submitboard').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
-    query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
-    query('#scoreShow').style.left = px((window.innerWidth - 420) / 2 );
-    query('#score2').style.left = px((window.innerWidth - 420) / 2 + 60);
-    query('#monsterShadow').style.left = px((window.innerWidth - 540) / 2);
     query('#sbmt').style.left = px((window.innerWidth - 540) / 2 + 430);
-    query('#bloodSubmit').style.left = px((window.innerWidth - 540) / 2 + 430);
     query('#input').style.left = px((window.innerWidth - 540) / 2 + 140);
-    query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
-    setTimer();
-    parent = query("#frame");
-    createBlocks();
+    query('#bloodSubmit').style.left = px((window.innerWidth - 540) / 2 + 430);
+    query('#monsterShadow').style.left = px((window.innerWidth - 540) / 2);
   }
 
   void setOutput() {
@@ -47,6 +40,15 @@ class StageManager {
     query('#scoreNum').style.left = px((window.innerWidth - 910) / 2 + 785);
     query('#scoreNum').text = "${stageManager.score}";
     setRestart();
+  }
+  void setGame() {
+    query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
+    query('#scoreShow').style.left = px((window.innerWidth - 420) / 2 );
+    query('#score2').style.left = px((window.innerWidth - 420) / 2 + 60);
+    query('#outBorder').style.left = px((window.innerWidth - 952) / 2);
+    setTimer();
+    parent = query("#frame");
+    createBlocks();
   }
 
   void setRestart() {
@@ -73,6 +75,7 @@ class StageManager {
       InputElement name = query('#input'); 
       if(name.value != "") {
       usrName = name.value;
+      setGame();
       
       query('#submitboard').classes.add('disappear');
 
@@ -106,6 +109,7 @@ class StageManager {
         InputElement name = query('#input'); 
         if(name.value != "") {
           usrName = name.value;
+          setGame();
         
           query('#submitboard').classes.add('disappear');
   
@@ -194,6 +198,7 @@ class StageManager {
       flyingbats[i].nodes.add(img);
       _parent.nodes.add(flyingbats[i]);
     }
+
     animator.add(new Bat());
   }
 //
@@ -218,54 +223,54 @@ class Bat implements Actor {
 
   void next(num time) {
     if (batNum == 0 && time >= 9800) {
-      bats[9].classes.add('disappear');
+      bats[9].remove();
       flyingbats[9].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[9]));
+      animator.add(new Fly(flyingbats[9], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 15800) {
-      bats[8].classes.add('disappear');
+    } else if (batNum == 1 && time >= 15800) {
+      bats[8].remove();
       flyingbats[8].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[8]));
+      animator.add(new Fly(flyingbats[8], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 21800) {
-      bats[7].classes.add('disappear');
+    } else if (batNum == 2 && time >= 21800) {
+      bats[7].remove();
       flyingbats[7].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[7]));
+      animator.add(new Fly(flyingbats[7], batNum));
       batNum++;    
-    } else if (batNum == 0 && time >= 27800) {
-      bats[6].classes.add('disappear');
+    } else if (batNum == 3 && time >= 27800) {
+      bats[6].remove();
       flyingbats[6].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[6]));
+      animator.add(new Fly(flyingbats[6], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 33800) {
-      bats[5].classes.add('disappear');
+    } else if (batNum == 4 && time >= 33800) {
+      bats[5].remove();
       flyingbats[5].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[5]));
+      animator.add(new Fly(flyingbats[5], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 39800) {
-      bats[4].classes.add('disappear');
+    } else if (batNum == 5 && time >= 39800) {
+      bats[4].remove();
       flyingbats[4].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[4]));
+      animator.add(new Fly(flyingbats[4], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 45800) {
-      bats[3].classes.add('disappear');
+    } else if (batNum == 6 && time >= 45800) {
+      bats[3].remove();
       flyingbats[3].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[3]));
+      animator.add(new Fly(flyingbats[3], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 51800) {
-      bats[2].classes.add('disappear');
+    } else if (batNum == 7 && time >= 51800) {
+      bats[2].remove();
       flyingbats[2].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[2]));
+      animator.add(new Fly(flyingbats[2], batNum));
       batNum++;
-    } else if (batNum == 0 && time >= 57800) {
-      bats[1].classes.add('disappear');
+    } else if (batNum == 8 && time >= 57800) {
+      bats[1].remove();
       flyingbats[1].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[1]));
+      animator.add(new Fly(flyingbats[1], batNum));
       batNum++;
     } else if (batNum == 9 && time >= 63800) {
-      bats[0].classes.add('disappear');
+      bats[0].remove();
       flyingbats[0].classes.remove('disappear');
-      animator.add(new Fly(flyingbats[0]));
+      animator.add(new FlyEnd());
       animator.remove(this);
     }
   }
@@ -273,10 +278,67 @@ class Bat implements Actor {
 
 class Fly implements Actor {
   DivElement bat;
+  num lastTime;
+  num firstCall;
+  int order;
+  double top = 386.0;
+  double left;
 
-  Fly(this.bat){}
+  Fly(this.bat, this.order){
+    left = 1.0 + (9.0 - order) * 68.0 - 140.0;
+  }
   
   void next(num time) {
-    animator.remove(this);
+    if (lastTime == null) {
+      lastTime = time;
+    }
+    if (firstCall == null) {
+      firstCall = time;
+    }
+    if(time - firstCall > 6000) {
+      bat.remove();
+      animator.remove(this);
+    }
+    if (time - firstCall < 2000 || time - firstCall > 4000) {
+      top += (time - lastTime) * (200/2000);
+    } else if (time - firstCall < 4000) {
+      top -= (time - lastTime) * (100/1000);
+    }
+
+    left += (time - lastTime) * (400/2000);
+    if (left >= (window.innerWidth - 952) / 2 + 925.0 - 100.0) {
+      bat.remove();
+      animator.remove(this);
+    }
+
+    bat.style.left = px(left);
+    bat.style.top = px(top);
+
+    lastTime = time;
+  }
+}
+
+class FlyEnd implements Actor {
+  double a;
+  num firstCall;
+
+  FlyEnd() {
+    a = 0.17 / 3000;
+  }
+
+  void next(num time) {
+    if(firstCall == null) {
+      firstCall = time;
+    }
+    if (time - firstCall > 3000) {
+      flyingbats[0].remove();
+      animator.remove(this);
+      return;
+    }
+    double top = 386.0 - aToDisplacement(a, time - firstCall);
+    double left = 1.0 - 140.0 + (time - firstCall) * (360 / 3000);
+
+    flyingbats[0].style.left = px(left);
+    flyingbats[0].style.top = px(top);
   }
 }

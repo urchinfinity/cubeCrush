@@ -466,9 +466,11 @@ void restart() {
   stageManager.score = 0;
   stageManager.stage = 0;
   gameManager.end = false;
+  animator.stop();
   query('#bigShield').classes.remove('disappear');
   query('#start').classes.remove('disappear');
-  animator.stop();
+  removeBat();
+  stageManager.setTimer();
 }
 
 class HintBlock {
@@ -508,7 +510,7 @@ bool searchBox({bool checkOnly: true}) {
               if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum - 11 != k) {
                 blocks[i+x][j].beClicked();
                 blocks[i+x][j+1].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i+x][j].cancelClicked();
                   blocks[i+x][j+1].cancelClicked();
                 });
@@ -522,7 +524,7 @@ bool searchBox({bool checkOnly: true}) {
               if (!checkOnly) {
                 blocks[i+x][j].beClicked();
                 blocks[i+x][j+1].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i+x][j].cancelClicked();
                   blocks[i+x][j+1].cancelClicked();
                 });
@@ -552,7 +554,7 @@ bool searchBox({bool checkOnly: true}) {
                 if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum - 11 != k) {
                   blocks[i][j+y].beClicked();
                   blocks[i+1][j+y].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i+1][j+y].cancelClicked();
                   });
@@ -567,7 +569,7 @@ bool searchBox({bool checkOnly: true}) {
               if (!checkOnly) {
                 blocks[i][j+y].beClicked();
                 blocks[i+1][j+y].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i][j+y].cancelClicked();
                   blocks[i+1][j+y].cancelClicked();
                 });
@@ -601,13 +603,13 @@ bool searchLine({bool checkOnly: true}) {
                 blocks[i+x][j].beClicked();
                 if (x == 1) {
                   blocks[i][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i+x][j].cancelClicked();
                     blocks[i][j].cancelClicked();
                   });
                 } else if (x == 2) {
                   blocks[i+3][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i+x][j].cancelClicked();
                     blocks[i+3][j].cancelClicked();
                   });
@@ -638,13 +640,13 @@ bool searchLine({bool checkOnly: true}) {
                 blocks[i][j+y].beClicked();
                 if (y == 1) {
                   blocks[i][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i][j].cancelClicked();
                   });
                 } else if (y == 2) {
                   blocks[i][j+3].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i][j+3].cancelClicked();
                   });
@@ -659,4 +661,14 @@ bool searchLine({bool checkOnly: true}) {
     }
   }
   return false;
+}
+
+
+void removeBat() {
+  for(int i = 0; i < 10; i++) {
+    if(bats[i] != null)
+      bats[i].remove();
+    if(flyingbats[i] != null)
+      flyingbats[i].remove();
+  }
 }
