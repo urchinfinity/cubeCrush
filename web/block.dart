@@ -544,22 +544,30 @@ void hint() {
   });
 }
 
-
-
-//----------------------restart start from here-------------------------------------------------------------
-
 void restart() {
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row; j++) {
-      blocks[i][j]._block.remove();
+      blocks[i][j].block.classes.remove(blockColor[blocks[i][j].colorNum]);
+      blocks[i][j].block.classes.remove(bombOn[blocks[i][j].bomb]);
+      blocks[i][j].block.classes.remove(thunderOn[blocks[i][j].thunder]);
+      blocks[i][j].block.classes.remove(multiColorOn[blocks[i][j].multiColor]);
+      blocks[i][j].colorNum = random.nextInt(5);
+      blocks[i][j].bomb = 0;
+      blocks[i][j].thunder = 0;
+      blocks[i][j].multiColor = 0;
+      blocks[i][j].skillOn = false;
     }
   }
-  createBlocks();
+  int blockNum = 0;
+  while(blockNum != column * row) {
+    blockNum = checkBlocks();
+  }
+  for (int i = 0; i < column; i++) {
+    for (int j = 0; j < row; j++) {
+      blocks[i][j].block.classes.add(blockColor[blocks[i][j].colorNum]);
+    }
+  }
 }
-//---------------end of restart--------------------------------------------------------------------------
-
-
-//---------search start from here----------------------------------------------------------------
 
 class HintBlock {
   int blockNums;
@@ -576,14 +584,13 @@ class HintBlock {
   }
 }
 
-Eye firstSwitch, secondSwitch;
-
+Block firstSwitch, secondSwitch;
+List<HintBlock> hintBlocks = new List(5);
 
 bool searchBox({bool checkOnly: true}) {
   for (int i = 0; i < column - 2; i++) {
     for (int j = 0; j < row - 1; j++) {
       //count num of each color
-      List<HintBlock> hintBlocks = new List(5);
       for (int k = 0; k < 5; k++) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
@@ -592,27 +599,29 @@ bool searchBox({bool checkOnly: true}) {
           hintBlocks[blocks[i+x][j+y].colorNum].counting(x, y);
         }
       }
-      ///if one of color > 3, check it
+      //if one of color > 3, check it
       for (int k = 0; k < 5; k++) {
-        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumI == 3) {
-          ///for hint
-          if (!checkOnly) {
-            for (int x = 0; x < 3; x++) {
-              if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum != k) {
-                firstSwitch = blocks[i+x][j];
-                secondSwitch = blocks[i+x][j+1];
+        if (hintBlocks[k].blockNums == 3) {
+          if (hintBlocks[k].sumI == 3) {
+            //for hint
+            if (!checkOnly) {
+              for (int x = 0; x < 3; x++) {
+                if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum != k) {
+                  firstSwitch = blocks[i+x][j];
+                  secondSwitch = blocks[i+x][j+1];
+                }
               }
             }
+            return true;
           }
-          return true;
         } else if (hintBlocks[k].blockNums == 4) {
           for (int x = 0; x < 3; x++) {
-            if (blocks[i+x][j].colorNum != k && blocks[i+x][j+1].colorNum == k) {
-              if (!checkOnly) {
+            if (blocks[i+x][j].colorNum != k) {
+              if (blocks[i+x][j+1] == k) {
                 firstSwitch = blocks[i+x][j];
                 secondSwitch = blocks[i+x][j+1];
+                return true;
               }
-              return true;
             }
           }
         }
@@ -621,7 +630,6 @@ bool searchBox({bool checkOnly: true}) {
   }
   for (int i = 0; i < column - 1; i++) {
     for (int j = 0; j < row - 2; j++) {
-      List<HintBlock> hintBlocks = new List(5);
       for (int k = 0; k < 5; k++) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
@@ -631,7 +639,8 @@ bool searchBox({bool checkOnly: true}) {
         }
       }
       for (int k = 0; k < 5; k++) {
-        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumJ == 3) {       
+        if (hintBlocks[k].blockNums == 3) {
+          if (hintBlocks[k].sumJ == 3) {
             if (!checkOnly) {
               for (int y = 0; y < 3; y++) {
                 if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum != k) {
@@ -639,18 +648,17 @@ bool searchBox({bool checkOnly: true}) {
                   secondSwitch = blocks[i+1][j+y];
                 }
               }
-              checkOnly = true;
             }
             return true;
+          }
         } else if (hintBlocks[k].blockNums == 4) {
           for (int y = 0; y < 3; y++) {
-            if (blocks[i][j+y].colorNum != k && blocks[i+1][j+y].colorNum == k) {
-              if (!checkOnly) {
+            if (blocks[i][j+y].colorNum != k) {
+              if (blocks[i+1][j+y] == k) {
                 firstSwitch = blocks[i][j+y];
                 secondSwitch = blocks[i+1][j+y];
-                checkOnly = true;
+                return true;
               }
-              return true;
             }
           }
         }
@@ -663,7 +671,6 @@ bool searchBox({bool checkOnly: true}) {
 bool searchLine({bool checkOnly: true}) {
   for (int i = 0; i < column - 3; i++) {
     for (int j = 0; j < row; j++) {
-      List<HintBlock> hintBlocks = new List(5);
       for (int k = 0; k < 5; k++) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
@@ -682,8 +689,7 @@ bool searchLine({bool checkOnly: true}) {
                   secondSwitch = blocks[i+3][j];
                 }
               }
-            }
-            checkOnly = true;
+            } 
           }
           return true;
         }
@@ -692,7 +698,6 @@ bool searchLine({bool checkOnly: true}) {
   }
   for (int i = 0; i < column; i++) {
     for (int j = 0; j < row - 3; j++) {
-      List<HintBlock> hintBlocks = new List(5);
       for (int k = 0; k < 5; k++) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
@@ -711,8 +716,7 @@ bool searchLine({bool checkOnly: true}) {
                   secondSwitch = blocks[i][j+3];
                 }
               }
-            }
-            checkOnly = true; 
+            } 
           }
           return true;
         }
@@ -721,9 +725,6 @@ bool searchLine({bool checkOnly: true}) {
   }
   return false;
 }
-
-//-----------------end of search------------------------------------------------------------------
-
 
 
 void findBomb(List<List<CountBlock>> countBlocks) {

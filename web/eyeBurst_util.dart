@@ -237,42 +237,42 @@ bool removeChanger(Eye a) {
     countY++;
     removersX.add(blocks[a.posX][i]);
   }
-  if((countX >= 5 && countY >= 3) || (countY >= 5 && countX >= 3)){
-    a.status = Eye.COLORCLEAN;
-    a.setSpecial(Eye.COLORCLEAN);
-
-    for(final eye in removersX)
-      animator.add(new Remover(eye));
-    for(final eye in removersY)
-      animator.add(new Remover(eye));
-
-    animator.add(new OpenSkillOn());
-    return true;
-
-  } else if (countX >= 5 || countY >= 5) {
-    a.status = Eye.THUNDER;
-    a.setSpecial(Eye.THUNDER);
-
-    for(final eye in removersX)
-      animator.add(new Remover(eye));
-    for(final eye in removersY)
-      animator.add(new Remover(eye));
-    
-    animator.add(new OpenSkillOn());
-    return true;
-
-  } else if (countX >= 3 && countY >= 3){
-    a.status = Eye.BOMB;
-    a.setSpecial(Eye.BOMB);
-
-    for(final eye in removersX)
-      animator.add(new Remover(eye));
-    for(final eye in removersY)
-      animator.add(new Remover(eye));
-
-    animator.add(new OpenSkillOn());
-    return true;
-  }
+//  if((countX >= 5 && countY >= 3) || (countY >= 5 && countX >= 3)){
+//    a.status = Eye.COLORCLEAN;
+//    a.setSpecial(Eye.COLORCLEAN);
+//
+//    for(final eye in removersX)
+//      animator.add(new Remover(eye));
+//    for(final eye in removersY)
+//      animator.add(new Remover(eye));
+//
+//    animator.add(new OpenSkillOn());
+//    return true;
+//
+//  } else if (countX >= 5 || countY >= 5) {
+//    a.status = Eye.THUNDER;
+//    a.setSpecial(Eye.THUNDER);
+//
+//    for(final eye in removersX)
+//      animator.add(new Remover(eye));
+//    for(final eye in removersY)
+//      animator.add(new Remover(eye));
+//    
+//    animator.add(new OpenSkillOn());
+//    return true;
+//
+//  } else if (countX >= 3 && countY >= 3){
+//    a.status = Eye.BOMB;
+//    a.setSpecial(Eye.BOMB);
+//
+//    for(final eye in removersX)
+//      animator.add(new Remover(eye));
+//    for(final eye in removersY)
+//      animator.add(new Remover(eye));
+//
+//    animator.add(new OpenSkillOn());
+//    return true;
+//  }
   if(countX >= 3 || countY >= 3) {    
     for(final eye in removersX)
       animator.add(new Remover(eye));
@@ -335,28 +335,48 @@ class Boon implements Actor {
 class Hoooon implements Actor {
   int times = 0;
   Eye a;
+  List<DivElement> lights = new List(4);
 
   Hoooon(Eye _a) {
     a = _a;
   }
  void next(num time) {
-  animator.remove(this);
-  return;
+  if (times == 0) {
+    a.destory();
+    for (int i = 0; i < 4; i++) {
+      lights[i] = createlighting(i, a.posX, a.posY);
+    }
+  }else if (times == 5) {
+    for (int i = 0; i < column; i++) {
+      blocks[i][a.posY].destory();
+      if (blocks[i][a.posY].count == false) {
+        stageManager.score += 8888;
+        blocks[i][a.posY].count = true;
+      }
+    }
+    for (int j = 0; j < row; j++) {
+       blocks[a.posX][j].destory();
+      if (blocks[a.posX][j].count == false) {
+        stageManager.score += 8888;
+        blocks[a.posX][j].count = true;
+      }
+    }
+  } else if (times == 9) {
+    animator.remove(this);
+  } 
+  if (times != 0) {
+    lights[1].style.top = px((a.posY * 68) - times * (a.posY * 68) ~/ 8);
+    lights[1].style.height = px(times * (a.posY * 68) ~/ 8 + 15);
+    
+    lights[2].style.left = px((a.posX * 68) - times * (a.posX * 68) ~/ 8);
+    lights[2].style.width = px(times * (a.posX * 68) ~/ 8 + 15);
+    
+    lights[3].style.height = px(times * (a.posY * 68) ~/ 8 + 15);
+    
+    lights[4].style.width = px(times * (a.posX * 68) ~/ 8 + 15);
+  }
+  times++;
  }
-//  for (int i = 0; i < column; i++) {
-//    animator.add(new Remover(blocks[i][a.posY]));
-//    if (blocks[i][a.posY].count == false) {
-//      stageManager.score += 8888;
-//      blocks[i][a.posY].count = true;
-//    }
-//  }
-//  for (int j = 0; j < row; j++) {
-//     animator.add(new Remover(blocks[a.posX][j]));
-//    if (blocks[a.posX][j].count == false) {
-//      stageManager.score += 8888;
-//      blocks[a.posX][j].count = true;
-//    }
-//  }
 }
 
 class CleanColor implements Actor {
@@ -397,4 +417,246 @@ class CleanColor implements Actor {
     }
     times ++;
   }
+}
+
+DivElement createlighting(int direction, int x, int y) {
+  const int TOP = 0;
+  const int LEFT = 1;
+  const int DOWN = 2;
+  const int RIGHT = 3;
+  DivElement div = new DivElement();
+  div.classes.add('hide');
+  parent.nodes.add(div);
+  if (direction == TOP) {
+    div.style.top = px(y * 68 + 8);
+    div.style.left = px(x * 68 + 8 + 15);
+    var img = new ImageElement(src: "static/thunder${direction}", width: 30, height: y * 68 + 8 + 30);
+    div.nodes.add(img);
+  } else if (direction == LEFT) {
+    DivElement div = new DivElement();
+    div.style.top = px(y * 68 + 8 + 15);
+    div.style.left = px(x * 68 + 8); 
+    var img = new ImageElement(src: "static/thunder${direction}", width: x * 68 + 8 + 30, height: 30);
+    div.nodes.add(img);
+  } else  if (direction == DOWN) {
+    DivElement div = new DivElement();
+    div.style.top = px(y * 68 + 8 + 30);
+    div.style.left = px(x * 68 + 8 + 15); 
+    var img = new ImageElement(src: "static/thunder${direction}", width: 30, height: y * 68 + 8 + 30);
+    div.nodes.add(img);
+  } else if (direction == RIGHT) {
+    DivElement div = new DivElement();
+    div.style.top = px(y * 68 + 8 + 15);
+    div.style.left = px(x * 68 + 8 + 30); 
+    var img = new ImageElement(src: "static/thunder${direction}", width: x * 68 + 8 + 30, height: 30);
+    div.nodes.add(img);
+  }  
+  div.style.height = px(30); 
+  div.style.width = px(30);
+  return div; 
+}
+
+void restart() {
+  for (int i = 0; i < column; i++) {
+    for (int j = 0; j < row; j++) {
+      blocks[i][j]._block.remove();
+    }
+  }
+  createBlocks();
+  stageManager.score = 0;
+  stageManager.stage = 0;
+  gameManager.end = false;
+  query('#bigShield').classes.remove('disappear');
+  query('#start').classes.remove('disappear');
+  animator.stop();
+}
+
+class HintBlock {
+  int blockNums;
+  int sumI;
+  int sumJ;
+  
+  HintBlock (this.blockNums, this.sumI, this.sumJ) {
+  }
+  
+  void counting (int x, int y) {
+    this.blockNums++;
+    this.sumI += x;
+    this.sumJ += y;
+  }
+}
+
+bool searchBox({bool checkOnly: true}) {
+  for (int i = 0; i < column - 2; i++) {
+    for (int j = 0; j < row - 1; j++) {
+      //count num of each color
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 2; y++) {
+          hintBlocks[blocks[i+x][j+y].colorNum - 11].counting(x, y);
+        }
+      }
+      ///if one of color > 3, check it
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumI == 3) {
+          ///for hint
+          if (!checkOnly) {
+            for (int x = 0; x < 3; x++) {
+              if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum - 11 != k) {
+                blocks[i+x][j].beClicked();
+                blocks[i+x][j+1].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i+x][j].cancelClicked();
+                  blocks[i+x][j+1].cancelClicked();
+                });
+              }
+            }
+          }
+          return true;
+        } else if (hintBlocks[k].blockNums == 4) {
+          for (int x = 0; x < 3; x++) {
+            if (blocks[i+x][j].colorNum - 11 != k && blocks[i+x][j+1].colorNum - 11 == k) {
+              if (!checkOnly) {
+                blocks[i+x][j].beClicked();
+                blocks[i+x][j+1].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i+x][j].cancelClicked();
+                  blocks[i+x][j+1].cancelClicked();
+                });
+              }
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  for (int i = 0; i < column - 1; i++) {
+    for (int j = 0; j < row - 2; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 2; x++) {
+        for (int y = 0; y < 3; y++) {
+          hintBlocks[blocks[i+x][j+y].colorNum - 11].counting(x, y);
+        }
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumJ == 3) {       
+            if (!checkOnly) {
+              for (int y = 0; y < 3; y++) {
+                if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum - 11 != k) {
+                  blocks[i][j+y].beClicked();
+                  blocks[i+1][j+y].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i+1][j+y].cancelClicked();
+                  });
+                }
+              }
+              checkOnly = true;
+            }
+            return true;
+        } else if (hintBlocks[k].blockNums == 4) {
+          for (int y = 0; y < 3; y++) {
+            if (blocks[i][j+y].colorNum - 11 != k && blocks[i+1][j+y].colorNum - 11 == k) {
+              if (!checkOnly) {
+                blocks[i][j+y].beClicked();
+                blocks[i+1][j+y].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i][j+y].cancelClicked();
+                  blocks[i+1][j+y].cancelClicked();
+                });
+                checkOnly = true;
+              }
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+bool searchLine({bool checkOnly: true}) {
+  for (int i = 0; i < column - 3; i++) {
+    for (int j = 0; j < row; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 4; x++) {
+        hintBlocks[blocks[i+x][j].colorNum - 11].counting(x, 0);
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3) {
+          if (!checkOnly) {
+            for (int x = 0; x < 4; x++) {
+              if (blocks[i+x][j].colorNum - 11 != k) {
+                blocks[i+x][j].beClicked();
+                if (x == 1) {
+                  blocks[i][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i+x][j].cancelClicked();
+                    blocks[i][j].cancelClicked();
+                  });
+                } else if (x == 2) {
+                  blocks[i+3][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i+x][j].cancelClicked();
+                    blocks[i+3][j].cancelClicked();
+                  });
+                }
+              }
+            }
+            checkOnly = true;
+          }
+          return true;
+        }
+      }
+    }
+  }
+  for (int i = 0; i < column; i++) {
+    for (int j = 0; j < row - 3; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int y = 0; y < 4; y++) {
+        hintBlocks[blocks[i][j+y].colorNum - 11].counting(0, y);
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3) {
+          if (!checkOnly) {
+            for (int y = 0; y < 4; y++) {
+              if (blocks[i][j+y].colorNum - 11 != k) {
+                blocks[i][j+y].beClicked();
+                if (y == 1) {
+                  blocks[i][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i][j].cancelClicked();
+                  });
+                } else if (y == 2) {
+                  blocks[i][j+3].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i][j+3].cancelClicked();
+                  });
+                }
+              }
+            }
+            checkOnly = true; 
+          }
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }

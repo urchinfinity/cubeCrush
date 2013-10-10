@@ -1,0 +1,110 @@
+.batShield {
+  top: 150px;
+  left: 0px;
+  width:100%;
+  overflow: hidden;
+  transform: rotateY(90deg);
+  -webkit-transform: rotateY(90deg);
+  animation: rBatS 6s linear;
+  -webkit-animation: rBatS 6s linear;
+  background-color: transparent;
+}
+
+@keyframes rBatS
+{
+from    {-webkit-transform: rotateY(90deg);}
+to      {-webkit-transform: rotateY(270deg);}
+}
+
+@-webkit-keyframes rBatS
+{
+from    {-webkit-transform: rotateY(90deg);}
+to      {-webkit-transform: rotateY(270deg);}
+}
+
+.batShield img {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;  
+  position: absolute;
+  top: -350px;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  border: 310px solid black;
+}
+
+
+@keyframes biggerBatS
+{
+from    {width: 100%;left:-310px;top:-350px;}
+to      {width: 1100%;left:-8300px;top:-5350px;}
+}
+
+@-webkit-keyframes biggerBatS
+{
+from    {width: 100%;left:-310px;top:-350px;}
+to      {width: 1100%;left:-8300px;top:-5350px;}
+}
+
+.scoreShow {
+  top: 400px;
+  width: 400px;
+}
+
+.scoreShow2 {
+  transform: rotateY(90deg);
+  -webkit-transform: rotateY(90deg);
+  animation: rBat 2s linear;
+  -webkit-animation: rBat 2s linear;
+}
+
+@keyframes rBat
+{
+from    {-webkit-transform: rotateY(0deg);}
+to      {-webkit-transform: rotateY(90deg);}
+}
+
+@-webkit-keyframes rBat
+{
+from    {-webkit-transform: rotateY(0deg);}
+to      {-webkit-transform: rotateY(90deg);}
+}
+
+.score2 {
+  top: 455px;
+  width: 280px;
+  height: 40px;
+  font-size: 35px;
+  color: white;
+  padding: 0;
+  text-align: center;
+  font-family: "Axure Handwriting", "Sniglet";
+  text-shadow: 0px 0px 5px rgba(255,255,255,1);
+  animation: beStronger 2s ease;
+  -webkit-animation: beStronger 2s ease;
+}
+
+.score3 {
+  transform: rotateY(90deg);
+  -webkit-transform: rotateY(90deg);
+  animation: rBat 2s linear;
+  -webkit-animation: rBat 2s linear;
+}
+
+@keyframes beStronger
+{
+from    {color:rgba(255,255,255,0);text-shadow: 0px 0px 5px rgba(255,255,255,0);}
+to      {color:rgba(255,255,255,1);text-shadow: 0px 0px 5px rgba(255,255,255,1);}
+}
+
+@-webkit-keyframes beStronger
+{
+from    {color:rgba(255,255,255,0);text-shadow: 0px 0px 5px rgba(255,255,255,0);}
+to      {color:rgba(255,255,255,1);text-shadow: 0px 0px 5px rgba(255,255,255,1);}
+}

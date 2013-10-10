@@ -31,7 +31,30 @@
 }
 
 .button img {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 50px;
+}
+
+.button img:hover {
+  top: 1px;
+  left: 2px;
+  height: 48px;
+  animation: resize 0.2s ease-out;
+  -webkit-animation: resize 0.2s ease-out;
+}
+
+@keyframes resize
+{
+from    {top: 0; left: 0; height: 50px;}
+to      {top: 1px; left: 2px; height: 48px;}
+}
+
+@-webkit-keyframes resize
+{
+from    {top: 0; left: 0; height: 50px;}
+to      {top: 1px; left: 2px; height: 48px;}
 }
 
 #restart {
@@ -112,4 +135,15 @@ to      {-webkit-transform: rotateY(720deg);}
   top: 506px;
   height: 80px;
   width: 80px;
+}
+
+.batfly {
+  top: 386px;
+  height: 260px;
+}
+
+.batfly img {
+  left: 0;
+  top: 0;
+  height: 260px;
 }

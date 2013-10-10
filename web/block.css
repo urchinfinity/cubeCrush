@@ -94,3 +94,7 @@ to   {left: 30px; top: 30px; width: 0px; height: 0px; transfrom: rotate(720deg);
 from {left: 0; top: 0; width: 60px; height: 60px; transfrom: rotate(0deg);}
 to   {left: 30px; top: 30px; width: 0px; height: 0px; transfrom: rotate(720deg);}
 }
+
+.hide {
+  overflow: hidden;
+}

@@ -1,4 +1,4 @@
-#frame, .block, .score, header, .rank, .button, .time, .timeline, .number, .shield, .start, .endScoreOut, .endScoreIn, .outBorder, .copyright, .output, .bat ,.batShield, .scoreShow {
+#frame, .block, .score, .score2, header, .rank, .button, .time, .timeline, .number, .shield, .start, .pumpkingL, .batfly, .pumpkingR, .outBorder, .copyright, .output, .bat, .batShield, .scoreShow, #scoreNum {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -24,6 +24,7 @@ header{
   padding-top: 10px;
   background: black;
 }
+
 header > img {
   height: 130px;
 }
@@ -106,17 +107,72 @@ header > img {
   width: 400px;
 }
 
+#lastscore {
+  top: 520px;
+  width: 180px;
+  transform: rotate(8deg);
+  -webkit-transform:rotate(8deg);
+}
+
+#scoreNum {
+  top: 607px;
+  width: 100px;
+  height: 40px;
+  color: rgb(255,125,0);
+  font-size: 20px;
+  font-family: "Axure Handwriting", "Sniglet";
+  text-align: center;
+  padding: 0;
+  transform: rotate(8deg);
+  -webkit-transform:rotate(8deg);
+
+}
+
+#re2 {
+  top: 550px;
+  width: 180px;
+  transform: rotate(-10deg);
+  -webkit-transform:rotate(-10deg);
+}
+
+#re2:hover {
+  transform: rotate(-20deg);
+  -webkit-transform:rotate(-20deg);
+  -animation: slip 0.1s ease-out;
+  -webkit-animation: slip 0.1s ease-out;
+}
+
+@keyframes slip
+{
+from    {transform: rotate(-10deg);}
+to      {transform: rotate(-20deg);}
+}
+
+@-webkit-keyframes slip
+{
+from    {-webkit-transform: rotate(-10deg);}
+to      {-webkit-transform: rotate(-20deg);}
+}
+
+
 .output>img {
   position: absolute;
   top: 40px;
   width: 540px;
 }
 
-.batShield {
-  overflow: hidden;
+#monster4 {
+  top: 60px;
+  width: 590px;
 }
 
-.batShield img {
+#monster3 {
+  width: 450px;
+}
+
+
+
+#input, #sbmt, #bloodSubmit, #monsterShadow {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -126,12 +182,24 @@ header > img {
   -ms-user-select: none;
   user-select: none;  
   position: absolute;
-  top: -150px;
-  left: 0;
   margin: 0;
-  width: 100%;
 }
 
-.scoreShow {
-  width: 100px;
+#input {
+  top: 450px;
+  width: 160px;
+  height: 50px;
+  border: 5px inset #363636;
+  border-radius: 10px;
+  font-size: 30px;
+}
+
+#sbmt, #bloodSubmit {
+  top: 260px;
+  width: 110px;
+}
+
+#monsterShadow {
+  width: 540px;
+  top: 40px;
 }

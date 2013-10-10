@@ -17,18 +17,18 @@ class GameManager implements Actor {
     cleanTimes++;
     List<List<CountBlock>> countBlocks = findBlocks();
     //put bomb
-    findBomb(countBlocks);
+    //findBomb(countBlocks);
     //put thunder and colocClean
-    findCross(countBlocks);
+    //findCross(countBlocks);
     for (int i = column - 1; i >= 0 ; i--) {
       for (int j = row - 1; j >= 0; j--) {
         if (countBlocks[i][j].countColumn >= 3) {
           for (int k = 0; k < countBlocks[i][j].countColumn; k++) {
-            if (blocks[i-k][j].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!!!
-              skill(blocks[i-k][j]);
-print("boooooooooooooooooon");
-              break;
-            }
+//            if (blocks[i-k][j].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!!!
+//              skill(blocks[i-k][j]);
+//print("boooooooooooooooooon");
+//              break;
+//            }
             animator.add(new Remover(blocks[i-k][j]));
             crush = true;
             /// count score
@@ -40,12 +40,12 @@ print("boooooooooooooooooon");
         }
         if (countBlocks[i][j].countRow >= 3) {
           for (int k = 0; k < countBlocks[i][j].countRow; k++) {
-            if (blocks[i][j-k].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!
-              skill(blocks[i][j-k]);
-print('booooooooooooooooooon');
-            } else {
-              animator.add(new Remover(blocks[i][j-k]));
-            }
+//            if (blocks[i][j-k].skillOn == true) {//!!!!!!!!!!!!!!!!!!!!
+//              skill(blocks[i][j-k]);
+//print('booooooooooooooooooon');
+//                break;
+//            }
+            animator.add(new Remover(blocks[i][j-k]));
             crush = true;
             //count score
             if (!blocks[i][j-k].count) {
@@ -56,7 +56,7 @@ print('booooooooooooooooooon');
         }
       }
     }
-    animator.add(new OpenSkillOn());
+    //animator.add(new OpenSkillOn());
     stageManager.score +=  crushBlocks * cleanTimes * 100;
     return crush;
   }
@@ -65,27 +65,28 @@ print('booooooooooooooooooon');
     if (stageManager.stage == 0) {
       animator.add(new Startor());
       stageManager.stage++;
-    } //else if (end){
-      //output
-    //} else {
-      if (time >= 363800){
+    } else if (end){
+      animator.add(new ControlEnder());
+      animator.remove(this);
+    } else {
+      if (time >= 63800) {
         query('#bigShield').classes.remove('disappear');
         end = true;
-      }// else if (time >= 363700){
-      //  //shake
-      //  if(shakeTimes > 3) {
-      //    for(int i = 0; i < column; i++){
-      //      for(int j = 0; j < row; j++){
-      //        if(blocks[i][j].colorNum != null) {
-      //          blocks[i][j]._block.classes.add('shake');
-      //        }
-      //      }
-      //    }
-      //    shakeTimes = 0;
-      //  } else
-      //    shakeTimes++;
-      //}
-    //}
+      } else if (time >= 63700){
+        //shake
+        if(shakeTimes > 3) {
+          for(int i = 0; i < column; i++){
+            for(int j = 0; j < row; j++){
+              if(blocks[i][j].colorNum != null) {
+                blocks[i][j]._block.classes.add('shake');
+              }
+            }
+          }
+          shakeTimes = 0;
+        } else
+          shakeTimes++;
+      }
+    }
   }
 }
 
@@ -365,6 +366,7 @@ class Startor implements Actor {
   }
   next(num time) {
     if (time >= 3800) {
+      query('#start').classes.remove('rotate');
       query('#start').classes.add('disappear');
       query('#numS').classes.add('disappear');
       query('#bigShield').classes.add('disappear'); 
@@ -388,22 +390,42 @@ class Startor implements Actor {
 
 class ControlEnder implements Actor {
   num firstCall;
-  bool showedScore = false;
+  int stage = 0;
 
   void next(num time) {
     if (firstCall == null) {
       firstCall = time;
       //bat turn to front
-    } else if (showedScore) {
-      //add animation
-    } else if (time - firstCall >= 3000 || showedScore == false) {
-      //show score
-    } 
-    //scoreboard tune to 0 degree
-    //blackshield turnfrom 90 degree
-    //when 150 degree -> zoom in && output appear
-    //turn to 190 degree and back to 180
-    //zoom in
+    } else if (stage == 0 && time - firstCall >= 3000) {
+print('0');
+      query("#score2").text = "${stageManager.score}";
+      query("#score2").classes.remove('disappear');
+      query("#scoreShow").classes.remove('disappear');
+      stage++;
+    } else if (stage == 1 && time - firstCall >= 6000) {
+print('1');
+      query("#scoreShow").classes.add('scoreShow2');
+      query("#score2").classes.add('score3');
+      stage++;
+    } else if (stage == 2 && time - firstCall >= 8000) {
+print('2');
+      query("#batShield").classes.remove('disappear');
+      query("#scoreShow").classes.remove('scoreShow2');
+      query("#score2").classes.remove('score3');
+      query('#score2').classes.add('disappear');
+      query('#scoreShow').classes.add('disappear');
+      stage++;
+    } else if(stage == 3 && time - firstCall >= 12000) {
+print('3');
+      stageManager.setOutput();
+      query('#output').classes.remove('disappear');
+      stage++;
+    } else if(stage == 4 && time - firstCall >= 14000) {
+print('4');
+      query("#batShield").classes.add('disappear');
+      stage++;
+      animator.remove(this);
+    }
   }
 }
 
