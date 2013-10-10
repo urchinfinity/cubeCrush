@@ -466,9 +466,11 @@ void restart() {
   stageManager.score = 0;
   stageManager.stage = 0;
   gameManager.end = false;
+  animator.stop();
   query('#bigShield').classes.remove('disappear');
   query('#start').classes.remove('disappear');
-  animator.stop();
+  removeBat();
+  stageManager.setTimer();
 }
 
 class HintBlock {
@@ -496,7 +498,7 @@ bool searchBox({bool checkOnly: true}) {
       }
       for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 2; y++) {
-          hintBlocks[blocks[i+x][j+y].colorNum].counting(x, y);
+          hintBlocks[blocks[i+x][j+y].colorNum - 11].counting(x, y);
         }
       }
       ///if one of color > 3, check it
@@ -505,10 +507,10 @@ bool searchBox({bool checkOnly: true}) {
           ///for hint
           if (!checkOnly) {
             for (int x = 0; x < 3; x++) {
-              if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum != k) {
+              if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum - 11 != k) {
                 blocks[i+x][j].beClicked();
                 blocks[i+x][j+1].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i+x][j].cancelClicked();
                   blocks[i+x][j+1].cancelClicked();
                 });
@@ -518,11 +520,11 @@ bool searchBox({bool checkOnly: true}) {
           return true;
         } else if (hintBlocks[k].blockNums == 4) {
           for (int x = 0; x < 3; x++) {
-            if (blocks[i+x][j].colorNum != k && blocks[i+x][j+1].colorNum == k) {
+            if (blocks[i+x][j].colorNum - 11 != k && blocks[i+x][j+1].colorNum - 11 == k) {
               if (!checkOnly) {
                 blocks[i+x][j].beClicked();
                 blocks[i+x][j+1].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i+x][j].cancelClicked();
                   blocks[i+x][j+1].cancelClicked();
                 });
@@ -542,17 +544,17 @@ bool searchBox({bool checkOnly: true}) {
       }
       for (int x = 0; x < 2; x++) {
         for (int y = 0; y < 3; y++) {
-          hintBlocks[blocks[i+x][j+y].colorNum].counting(x, y);
+          hintBlocks[blocks[i+x][j+y].colorNum - 11].counting(x, y);
         }
       }
       for (int k = 0; k < 5; k++) {
         if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumJ == 3) {       
             if (!checkOnly) {
               for (int y = 0; y < 3; y++) {
-                if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum != k) {
+                if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum - 11 != k) {
                   blocks[i][j+y].beClicked();
                   blocks[i+1][j+y].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i+1][j+y].cancelClicked();
                   });
@@ -563,11 +565,11 @@ bool searchBox({bool checkOnly: true}) {
             return true;
         } else if (hintBlocks[k].blockNums == 4) {
           for (int y = 0; y < 3; y++) {
-            if (blocks[i][j+y].colorNum != k && blocks[i+1][j+y].colorNum == k) {
+            if (blocks[i][j+y].colorNum - 11 != k && blocks[i+1][j+y].colorNum - 11 == k) {
               if (!checkOnly) {
                 blocks[i][j+y].beClicked();
                 blocks[i+1][j+y].beClicked();
-                new Timer(new Duration(milliseconds: 300), (){
+                new Timer(new Duration(milliseconds: 600), (){
                   blocks[i][j+y].cancelClicked();
                   blocks[i+1][j+y].cancelClicked();
                 });
@@ -591,23 +593,23 @@ bool searchLine({bool checkOnly: true}) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
       for (int x = 0; x < 4; x++) {
-        hintBlocks[blocks[i+x][j].colorNum].counting(x, 0);
+        hintBlocks[blocks[i+x][j].colorNum - 11].counting(x, 0);
       }
       for (int k = 0; k < 5; k++) {
         if (hintBlocks[k].blockNums == 3) {
           if (!checkOnly) {
             for (int x = 0; x < 4; x++) {
-              if (blocks[i+x][j].colorNum != k) {
+              if (blocks[i+x][j].colorNum - 11 != k) {
                 blocks[i+x][j].beClicked();
                 if (x == 1) {
                   blocks[i][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i+x][j].cancelClicked();
                     blocks[i][j].cancelClicked();
                   });
                 } else if (x == 2) {
                   blocks[i+3][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i+x][j].cancelClicked();
                     blocks[i+3][j].cancelClicked();
                   });
@@ -628,23 +630,23 @@ bool searchLine({bool checkOnly: true}) {
         hintBlocks[k] = new HintBlock(0, 0, 0);
       }
       for (int y = 0; y < 4; y++) {
-        hintBlocks[blocks[i][j+y].colorNum].counting(0, y);
+        hintBlocks[blocks[i][j+y].colorNum - 11].counting(0, y);
       }
       for (int k = 0; k < 5; k++) {
         if (hintBlocks[k].blockNums == 3) {
           if (!checkOnly) {
             for (int y = 0; y < 4; y++) {
-              if (blocks[i][j+y].colorNum != k) {
+              if (blocks[i][j+y].colorNum - 11 != k) {
                 blocks[i][j+y].beClicked();
                 if (y == 1) {
                   blocks[i][j].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i][j].cancelClicked();
                   });
                 } else if (y == 2) {
                   blocks[i][j+3].beClicked();
-                  new Timer(new Duration(milliseconds: 300), (){
+                  new Timer(new Duration(milliseconds: 600), (){
                     blocks[i][j+y].cancelClicked();
                     blocks[i][j+3].cancelClicked();
                   });
@@ -659,4 +661,14 @@ bool searchLine({bool checkOnly: true}) {
     }
   }
   return false;
+}
+
+
+void removeBat() {
+  for(int i = 0; i < 10; i++) {
+    if(bats[i] != null)
+      bats[i].remove();
+    if(flyingbats[i] != null)
+      flyingbats[i].remove();
+  }
 }
