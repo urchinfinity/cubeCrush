@@ -470,3 +470,193 @@ void restart() {
   query('#start').classes.remove('disappear');
   animator.stop();
 }
+
+class HintBlock {
+  int blockNums;
+  int sumI;
+  int sumJ;
+  
+  HintBlock (this.blockNums, this.sumI, this.sumJ) {
+  }
+  
+  void counting (int x, int y) {
+    this.blockNums++;
+    this.sumI += x;
+    this.sumJ += y;
+  }
+}
+
+bool searchBox({bool checkOnly: true}) {
+  for (int i = 0; i < column - 2; i++) {
+    for (int j = 0; j < row - 1; j++) {
+      //count num of each color
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 2; y++) {
+          hintBlocks[blocks[i+x][j+y].colorNum].counting(x, y);
+        }
+      }
+      ///if one of color > 3, check it
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumI == 3) {
+          ///for hint
+          if (!checkOnly) {
+            for (int x = 0; x < 3; x++) {
+              if (blocks[i+x][j+hintBlocks[k].sumJ-1].colorNum != k) {
+                blocks[i+x][j].beClicked();
+                blocks[i+x][j+1].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i+x][j].cancelClicked();
+                  blocks[i+x][j+1].cancelClicked();
+                });
+              }
+            }
+          }
+          return true;
+        } else if (hintBlocks[k].blockNums == 4) {
+          for (int x = 0; x < 3; x++) {
+            if (blocks[i+x][j].colorNum != k && blocks[i+x][j+1].colorNum == k) {
+              if (!checkOnly) {
+                blocks[i+x][j].beClicked();
+                blocks[i+x][j+1].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i+x][j].cancelClicked();
+                  blocks[i+x][j+1].cancelClicked();
+                });
+              }
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  for (int i = 0; i < column - 1; i++) {
+    for (int j = 0; j < row - 2; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 2; x++) {
+        for (int y = 0; y < 3; y++) {
+          hintBlocks[blocks[i+x][j+y].colorNum].counting(x, y);
+        }
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3 && hintBlocks[k].sumJ == 3) {       
+            if (!checkOnly) {
+              for (int y = 0; y < 3; y++) {
+                if (blocks[i+hintBlocks[k].sumI-1][j+y].colorNum != k) {
+                  blocks[i][j+y].beClicked();
+                  blocks[i+1][j+y].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i+1][j+y].cancelClicked();
+                  });
+                }
+              }
+              checkOnly = true;
+            }
+            return true;
+        } else if (hintBlocks[k].blockNums == 4) {
+          for (int y = 0; y < 3; y++) {
+            if (blocks[i][j+y].colorNum != k && blocks[i+1][j+y].colorNum == k) {
+              if (!checkOnly) {
+                blocks[i][j+y].beClicked();
+                blocks[i+1][j+y].beClicked();
+                new Timer(new Duration(milliseconds: 300), (){
+                  blocks[i][j+y].cancelClicked();
+                  blocks[i+1][j+y].cancelClicked();
+                });
+                checkOnly = true;
+              }
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+bool searchLine({bool checkOnly: true}) {
+  for (int i = 0; i < column - 3; i++) {
+    for (int j = 0; j < row; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int x = 0; x < 4; x++) {
+        hintBlocks[blocks[i+x][j].colorNum].counting(x, 0);
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3) {
+          if (!checkOnly) {
+            for (int x = 0; x < 4; x++) {
+              if (blocks[i+x][j].colorNum != k) {
+                blocks[i+x][j].beClicked();
+                if (x == 1) {
+                  blocks[i][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i+x][j].cancelClicked();
+                    blocks[i][j].cancelClicked();
+                  });
+                } else if (x == 2) {
+                  blocks[i+3][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i+x][j].cancelClicked();
+                    blocks[i+3][j].cancelClicked();
+                  });
+                }
+              }
+            }
+            checkOnly = true;
+          }
+          return true;
+        }
+      }
+    }
+  }
+  for (int i = 0; i < column; i++) {
+    for (int j = 0; j < row - 3; j++) {
+      List<HintBlock> hintBlocks = new List(5);
+      for (int k = 0; k < 5; k++) {
+        hintBlocks[k] = new HintBlock(0, 0, 0);
+      }
+      for (int y = 0; y < 4; y++) {
+        hintBlocks[blocks[i][j+y].colorNum].counting(0, y);
+      }
+      for (int k = 0; k < 5; k++) {
+        if (hintBlocks[k].blockNums == 3) {
+          if (!checkOnly) {
+            for (int y = 0; y < 4; y++) {
+              if (blocks[i][j+y].colorNum != k) {
+                blocks[i][j+y].beClicked();
+                if (y == 1) {
+                  blocks[i][j].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i][j].cancelClicked();
+                  });
+                } else if (y == 2) {
+                  blocks[i][j+3].beClicked();
+                  new Timer(new Duration(milliseconds: 300), (){
+                    blocks[i][j+y].cancelClicked();
+                    blocks[i][j+3].cancelClicked();
+                  });
+                }
+              }
+            }
+            checkOnly = true; 
+          }
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -69,10 +69,10 @@ class GameManager implements Actor {
       animator.add(new ControlEnder());
       animator.remove(this);
     } else {
-      if (time >= 5000) {//363800
+      if (time >= 63800) {
         query('#bigShield').classes.remove('disappear');
         end = true;
-      } else if (time >= 363700){
+      } else if (time >= 63700){
         //shake
         if(shakeTimes > 3) {
           for(int i = 0; i < column; i++){

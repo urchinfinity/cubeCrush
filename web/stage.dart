@@ -166,6 +166,9 @@ class StageManager {
       } 
     });
     query('#hint').onClick.listen((MouseEvent event) {
+      if (!searchBox(checkOnly: false)) {
+        searchLine(checkOnly: false);
+      }
     });
     query('#restart').onClick.listen((MouseEvent event) {
       restart();
@@ -182,7 +185,16 @@ class StageManager {
       img.style.left = px(25);
       bats[i].nodes.add(img);
       _parent.nodes.add(bats[i]);
-    }    
+    }
+
+    for(int i = 0; i < 10; i++){
+      flyingbats[i] = new Element.html('<div class="batfly disappear"></div>');
+      flyingbats[i].style.left = px(1 + i * 68 - 140);
+      ImageElement img = new Element.html('<img src="static/batFly.gif">');
+      flyingbats[i].nodes.add(img);
+      _parent.nodes.add(flyingbats[i]);
+    }
+    animator.add(new Bat());
   }
 //
 //  void create() {
@@ -199,3 +211,72 @@ class StageManager {
 
 //stage = new Stage()..create();
 List<DivElement> bats = new List(10);
+List<DivElement> flyingbats = new List(10);
+
+class Bat implements Actor {
+  int batNum = 0;
+
+  void next(num time) {
+    if (batNum == 0 && time >= 9800) {
+      bats[9].classes.add('disappear');
+      flyingbats[9].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[9]));
+      batNum++;
+    } else if (batNum == 0 && time >= 15800) {
+      bats[8].classes.add('disappear');
+      flyingbats[8].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[8]));
+      batNum++;
+    } else if (batNum == 0 && time >= 21800) {
+      bats[7].classes.add('disappear');
+      flyingbats[7].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[7]));
+      batNum++;    
+    } else if (batNum == 0 && time >= 27800) {
+      bats[6].classes.add('disappear');
+      flyingbats[6].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[6]));
+      batNum++;
+    } else if (batNum == 0 && time >= 33800) {
+      bats[5].classes.add('disappear');
+      flyingbats[5].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[5]));
+      batNum++;
+    } else if (batNum == 0 && time >= 39800) {
+      bats[4].classes.add('disappear');
+      flyingbats[4].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[4]));
+      batNum++;
+    } else if (batNum == 0 && time >= 45800) {
+      bats[3].classes.add('disappear');
+      flyingbats[3].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[3]));
+      batNum++;
+    } else if (batNum == 0 && time >= 51800) {
+      bats[2].classes.add('disappear');
+      flyingbats[2].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[2]));
+      batNum++;
+    } else if (batNum == 0 && time >= 57800) {
+      bats[1].classes.add('disappear');
+      flyingbats[1].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[1]));
+      batNum++;
+    } else if (batNum == 9 && time >= 63800) {
+      bats[0].classes.add('disappear');
+      flyingbats[0].classes.remove('disappear');
+      animator.add(new Fly(flyingbats[0]));
+      animator.remove(this);
+    }
+  }
+}
+
+class Fly implements Actor {
+  DivElement bat;
+
+  Fly(this.bat){}
+  
+  void next(num time) {
+    animator.remove(this);
+  }
+}

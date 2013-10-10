@@ -136,3 +136,14 @@ to      {-webkit-transform: rotateY(720deg);}
   height: 80px;
   width: 80px;
 }
+
+.batfly {
+  top: 386px;
+  height: 260px;
+}
+
+.batfly img {
+  left: 0;
+  top: 0;
+  height: 260px;
+}
