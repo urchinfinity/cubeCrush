@@ -3,6 +3,24 @@ part of eyeBurst;
 StageManager stageManager = new StageManager();
 DivElement pos;
 
+
+//-------------start----------------------------------------
+var subscription = null;
+dataReceived(MessageEvent e) {
+  var data = e.data;
+  if (data["recipient"] != 'DART') {
+    return;
+  }
+  stageManager.rank = data["rank"];
+  var message = {'recipient': 'JSsecond'};
+  window.postMessage(message, '*');
+  subscription.cancel();
+  stageManager.setOutput();
+}
+//--------------end-----------------------------------------------
+
+
+
 class StageManager {
   bool sthClicked = false;
   Eye firstClicked, secondClicked;

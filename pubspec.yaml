@@ -4,3 +4,4 @@ dependencies:
   http_server: any
   route: any
   browser: any
+  js: any

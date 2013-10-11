@@ -48,4 +48,3 @@ abstract class Actor {
   ///time is milliseconds
   void next(int time);
 }
-

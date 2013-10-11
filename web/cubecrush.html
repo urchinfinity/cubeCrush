@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="block.css">    
     <link rel="stylesheet" href="outBorder.css">
     <link rel="stylesheet" href="output.css">
-
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sniglet">
   </head>
   <body>
+    <script src="packages/browser/dart.js"></script>
+    <script src="eventlistener01.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+    <script type="text/javascript">
+      Parse.initialize("mH1YRNw0jMJiRpfOxZMxrjZVVB2hSNl8IuMIntFg", "a399QZT4ocqy6j2rw5y2DtaykTax4mPiNjtf1Kr0");
+    </script>
     <header><img src="static/logo.png"></header>
     <div class="copyright">
     Copyright &copy; 2013 Leafinity<br/>https://www.facebook.com/leafinity<br/>illustrator: https://www.facebook.com/YANGMEI.YANG
@@ -43,7 +49,7 @@
         <img src="static/monster3.png" id="monster2" class="disappear">
         <img src="static/monster4.png" id="monster3" class="disappear">
         <img src="static/monster5.png" id="monster4" class="disappear">
-        <div class="rank" id="rank"><img src="static/rank.png"></div>
+        <div class="rank" id="rank"></div>
     </div>
 
     <div class="output batShield disappear" id="batShield"><img src="static/blackShield.png"></div>
