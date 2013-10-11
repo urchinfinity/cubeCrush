@@ -1,4 +1,4 @@
-#frame, .block, .score, .score2, header, .rank, .button, .time, .timeline, .number, .shield, .start, .pumpkingL, .batfly, .pumpkingR, .outBorder, .copyright, .output, .bat, .batShield, .scoreShow, #scoreNum {
+#frame, .block, .score, .score2, header, .rank, .button, .time, .timeline, .number, .shield, .start, .pumpkingL, .batfly, .pumpkingR, .outBorder, .copyright, .output, .bat, .batShield, .scoreShow, #scoreNum, .blockOutput, .block0, .block1, .block2 {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -98,15 +98,42 @@ header > img {
 
 .rank {
   top: 55px;
-  width: 400px;
-  height: 484px;
+  width: 425px;
+  height: 463px;
   font-size: 30px;
-  padding-left: 10px;
-  padding-top: 10px;
+  background-image: url("static/rank.png");
+  background-size: 400px auto; 
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .rank img {
   width: 400px;
+  position:fixed;
+}
+
+.blockOutput {
+  height: 40px;
+  color: #fff;
+  font-size: 19pt;
+  text-align: right;
+  line-height: 40px;
+  font-family: "Axure Handwriting", "Sniglet";
+}
+
+.block0 {
+  width: 40px;
+  left: 100px;
+}
+
+.block1 {
+  width: 150px;
+  left: 145px;
+}
+
+.block2 {
+  width: 100px;
+  left: 300px;
 }
 
 #lastscore {

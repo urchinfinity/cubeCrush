@@ -397,18 +397,15 @@ class ControlEnder implements Actor {
       firstCall = time;
       //bat turn to front
     } else if (stage == 0 && time - firstCall >= 3000) {
-print('0');
       query("#score2").text = "${stageManager.score}";
       query("#score2").classes.remove('disappear');
       query("#scoreShow").classes.remove('disappear');
       stage++;
     } else if (stage == 1 && time - firstCall >= 6000) {
-print('1');
       query("#scoreShow").classes.add('scoreShow2');
       query("#score2").classes.add('score3');
       stage++;
     } else if (stage == 2 && time - firstCall >= 8000) {
-print('2');
       query("#batShield").classes.remove('disappear');
       query("#scoreShow").classes.remove('scoreShow2');
       query("#score2").classes.remove('score3');
@@ -416,12 +413,20 @@ print('2');
       query('#scoreShow').classes.add('disappear');
       stage++;
     } else if(stage == 3 && time - firstCall >= 12000) {
-print('3');
-      stageManager.setOutput();
+      
+      
+      
+      //------------------strat---------------------------------------------------------------
+      var message = {'recipient': 'JSfirst', 'name': stageManager.usrName, 'score': stageManager.score};
+      window.postMessage(message, '*');
+      subscription = window.onMessage.listen(dataReceived);
+      //-------------------end-----------------------------------------------------------------
+      
+      
+      //stageManager.setOutput();
       query('#output').classes.remove('disappear');
       stage++;
     } else if(stage == 4 && time - firstCall >= 14000) {
-print('4');
       query("#batShield").classes.add('disappear');
       stage++;
       animator.remove(this);
