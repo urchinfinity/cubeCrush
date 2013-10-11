@@ -41,6 +41,7 @@ class StageManager {
     query('#scoreNum').text = "${stageManager.score}";
     setRestart();
   }
+  
   void setGame() {
     query('#batShield').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#scoreShow').style.left = px((window.innerWidth - 420) / 2 );
