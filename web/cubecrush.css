@@ -98,18 +98,27 @@ header > img {
 
 .rank {
   top: 55px;
-  width: 425px;
-  height: 463px;
+  width: 450px;
+  height: 484px;
   font-size: 30px;
   background-image: url("static/rank.png");
-  background-size: 400px auto; 
+  background-size: 440px 484px;
+  background-repeat: no-repeat;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
-.rank img {
-  width: 400px;
-  position:fixed;
+::-webkit-scrollbar-thumb:vertical {
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  height: 0px !important;
+}
+
+::-webkit-scrollbar { 
+  height: 0px;
+  width: 0px;
 }
 
 .blockOutput {
@@ -123,17 +132,17 @@ header > img {
 
 .block0 {
   width: 40px;
-  left: 100px;
+  left: 90px;
 }
 
 .block1 {
-  width: 150px;
-  left: 145px;
+  width: 165px;
+  left: 135px;
 }
 
 .block2 {
-  width: 100px;
-  left: 300px;
+  width: 125px;
+  left: 305px;
 }
 
 #lastscore {
@@ -198,8 +207,6 @@ to      {-webkit-transform: rotate(-20deg);}
 #monster3 {
   width: 450px;
 }
-
-
 
 #input, #sbmt, #bloodSubmit, #monsterShadow {
   -webkit-box-sizing: border-box;

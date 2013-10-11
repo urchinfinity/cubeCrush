@@ -3,7 +3,6 @@ part of eyeBurst;
 StageManager stageManager = new StageManager();
 DivElement pos;
 
-
 //-------------start----------------------------------------
 var subscription = null;
 dataReceived(MessageEvent e) {
@@ -16,10 +15,20 @@ dataReceived(MessageEvent e) {
   window.postMessage(message, '*');
   subscription.cancel();
   stageManager.setOutput();
+  
+  if (stageManager.rank == 1) {
+    query('#monster0').classes.remove('disappear');
+  } else if (stageManager.rank >= 2 && stageManager.rank <= 5) {
+    query('#monster4').classes.remove('disappear');
+  } else if (stageManager.rank >= 6 && stageManager.rank <= 10) {
+    query('#monster1').classes.remove('disappear');
+  } else if (stageManager.rank >= 11 && stageManager.rank <= 50) {
+    query('#monster3').classes.remove('disappear');
+  } else if (stageManager.rank == 0) {
+    query('#monster2').classes.remove('disappear');
+  }
 }
 //--------------end-----------------------------------------------
-
-
 
 class StageManager {
   bool sthClicked = false;

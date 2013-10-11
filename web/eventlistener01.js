@@ -2,7 +2,7 @@ var len = 0;
 var rank = 1;
 var max = 50;
 var div;
-var paddingTop = 15;
+var paddingTop = 10;
 
 
 window.addEventListener("message", receiveMessage);  

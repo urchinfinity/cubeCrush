@@ -2,7 +2,7 @@ var len = 0;
 var rank = 0;
 var max = 50;
 var div;
-var paddingTop = 15;
+var paddingTop = 10;
 
 window.addEventListener("message", receiveMessage);  
     
@@ -75,7 +75,8 @@ function receiveMessage (event) {
             div[results.length][0].textContent = results.length + 1;
             div[results.length][1].textContent = data.name;
             div[results.length][2].textContent = data.score;
-        		userLink.set("rank", results.length + 1);
+            rank = results.length + 1;
+        	userLink.set("rank", rank);
             userLink.save();
             len = results.length + 1;
           }

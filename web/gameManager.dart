@@ -394,6 +394,14 @@ class ControlEnder implements Actor {
 
   void next(num time) {
     if (firstCall == null) {
+      query('#output').classes.remove('disappear');
+      query('#output').classes.add('hideOutput');
+      //------------------strat---------------------------------------------------------------
+      var message = {'recipient': 'JSfirst', 'name': stageManager.usrName, 'score': stageManager.score};
+      window.postMessage(message, '*');
+      subscription = window.onMessage.listen(dataReceived);
+      //-------------------end-----------------------------------------------------------------
+
       firstCall = time;
       //bat turn to front
     } else if (stage == 0 && time - firstCall >= 3000) {
@@ -413,18 +421,7 @@ class ControlEnder implements Actor {
       query('#scoreShow').classes.add('disappear');
       stage++;
     } else if(stage == 3 && time - firstCall >= 12000) {
-      
-      
-      
-      //------------------strat---------------------------------------------------------------
-      var message = {'recipient': 'JSfirst', 'name': stageManager.usrName, 'score': stageManager.score};
-      window.postMessage(message, '*');
-      subscription = window.onMessage.listen(dataReceived);
-      //-------------------end-----------------------------------------------------------------
-      
-      
-      //stageManager.setOutput();
-      query('#output').classes.remove('disappear');
+      query('#output').classes.remove('hideOutput');
       stage++;
     } else if(stage == 4 && time - firstCall >= 14000) {
       query("#batShield").classes.add('disappear');
