@@ -42,6 +42,10 @@
   display: none;
 }
 
+.hideOutput{
+  visibility: hidden;
+}
+
 .bomb {
   background-image: url('bomb.png');
 }
