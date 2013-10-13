@@ -101,6 +101,7 @@ header > img {
   width: 450px;
   height: 484px;
   font-size: 30px;
+  overflow: hidden;
   background-image: url("static/rank.png");
   background-size: 440px 484px;
   background-repeat: no-repeat;
