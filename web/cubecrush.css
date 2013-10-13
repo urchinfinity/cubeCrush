@@ -239,3 +239,7 @@ to      {-webkit-transform: rotate(-20deg);}
   width: 540px;
   top: 40px;
 }
+
+.hide {
+  visibility: hidden;
+}

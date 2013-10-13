@@ -463,10 +463,10 @@ void restart() {
     }
   }
   createBlocks();
+  animator.stop();
   stageManager.score = 0;
   stageManager.stage = 0;
   gameManager.end = false;
-  animator.stop();
   query('#bigShield').classes.remove('disappear');
   query('#start').classes.remove('disappear');
   removeBat();
@@ -665,7 +665,7 @@ bool searchLine({bool checkOnly: true}) {
 
 
 void removeBat() {
-  for(int i = 0; i < 10; i++) {
+  for (int i = 0; i < 10; i++) {
     if(bats[i] != null)
       bats[i].remove();
     if(flyingbats[i] != null)

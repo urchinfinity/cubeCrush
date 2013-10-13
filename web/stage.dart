@@ -48,6 +48,7 @@ class StageManager {
   }
   
   void setStage() {    
+    document.body.classes.remove('hide');
     query('.copyright').style.top = window.innerHeight - 110 >= 861? px(window.innerHeight - 110): px(861);
     query('#submitboard').style.height = window.innerHeight - 110 >= 861? px(window.innerHeight - 240): px(861-150);
     query('#sbmt').style.left = px((window.innerWidth - 540) / 2 + 430);
@@ -226,7 +227,6 @@ class StageManager {
       flyingbats[i].nodes.add(img);
       _parent.nodes.add(flyingbats[i]);
     }
-
     animator.add(new Bat());
   }
 //

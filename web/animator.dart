@@ -9,22 +9,27 @@ class Animator {
 
   Animator() {
     _callback = (num now) {
-      if (_whenStarted == null)
+      if (!_running)
+        return;
+      if (_whenStarted == null) {
         _whenStarted = now;
+      }
       now -= _whenStarted;
 
       for (final Actor actor in new List.from(actors)) {
+        if (!_running)
+          return;
         actor.next(now);
       }
-      
-      if (_running)
-        window.requestAnimationFrame(_callback);
+
+      window.requestAnimationFrame(_callback);
     };
   }
 
   List<Actor> actors = [];
 
   void add(Actor actor){
+print(">>add $actor");
     actors.add(actor);
   }
   void remove(Actor actor) {
@@ -40,6 +45,7 @@ class Animator {
   }
   void stop() {
     _running = false;
+    _whenStarted = null;
     actors = [];
   }
 }
