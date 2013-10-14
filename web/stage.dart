@@ -109,12 +109,13 @@ class StageManager {
       query('#submitboard').classes.add('disappear');
 
       query('#start').onClick.listen((MouseEvent event) {
-        animator.add(gameManager);
-        animator.start();
         if(firstStart){
           firstStart = false;
           setEvent2();
         }
+        animator.add(new Score(query('#score')));
+        animator.add(gameManager);
+        animator.start();
       });
       } else {
         query('#bloodSubmit').classes.remove('disappear');
@@ -143,12 +144,13 @@ class StageManager {
           query('#submitboard').classes.add('disappear');
   
           query('#start').onClick.listen((MouseEvent event) {
-            animator.add(gameManager);
-            animator.start();
             if(firstStart){
               firstStart = false;
               setEvent2();
             }
+            animator.add(gameManager);            
+            animator.add(new Score(query('#score')));
+            animator.start();
           });
         } else {
           query('#bloodSubmit').classes.remove('disappear');
@@ -162,7 +164,6 @@ class StageManager {
 
   void setEvent2() {
     pos = query('#outBorder');
-    animator.add(new Score(query('#score')));
     parent.onClick.listen((MouseEvent event) {
       int clickPosX, clickPosY;
       clickPosX = (event.page.x - pos.offsetLeft).toInt();
